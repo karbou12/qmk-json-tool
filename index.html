@@ -53,10 +53,18 @@
     /* タブ3: 3ペイン・マージ専用追加スタイル */
     .conflict-block-head { background: #fff8c5; border-top: 1px dashed #d0d7de; border-bottom: 1px dashed #d0d7de; flex-wrap: wrap; height: auto !important; padding: 4px 0; }
     .conflict-block-head .line-num { background: #fff1a8; font-weight: bold; }
-    .result-row { display: flex; flex-direction: column; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; overflow: hidden; margin-top: 15px; }
+
+    /* 左側の行数表示（Gutter）だけを美しく染め上げるスタイル */
+    .result-row { display: flex; flex-direction: column; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; margin-top: 15px; }
     .result-wrapper { display: flex; position: relative; height: 35vh; background: #fff; resize: vertical; overflow: hidden; min-height: 120px; max-height: 80vh; }
-    .result-gutter { background: #f6f8fa; border-right: 1px solid #d0d7de; color: #57606a; text-align: right; padding: 12px 8px; font-family: monospace; font-size: 13px; line-height: 1.5; user-select: none; min-width: 55px; box-sizing: border-box; white-space: pre; overflow: hidden; }
-    textarea.result-editor { flex-grow: 1; border: none !important; border-radius: 0 !important; line-height: 1.5; outline: none; font-family: monospace; font-size: 13px; padding: 12px; margin: 0 !important; height: 100% !important; resize: none !important; }
+    /* 左側の行数表示専用コンテナ */
+    .result-gutter { background: #f6f8fa; border-right: 1px solid #d0d7de; color: #57606a; text-align: right; font-family: monospace; font-size: 13px; line-height: 1.5; user-select: none; min-width: 55px; box-sizing: border-box; overflow-y: hidden; }
+    .gutter-line { padding: 0 8px 0 0; white-space: pre; box-sizing: border-box; height: 19.5px; /* textareaの1行（1.5倍）に完全ジャストフィット */ line-height: 19.5px; }
+    .gutter-line.m-head { background: #ffd8d4; color: #a40e1b; font-weight: bold; border-left: 2px solid #cf222e; }
+    .gutter-line.m-incoming { background: #ccffd8; color: #115324; font-weight: bold; border-left: 2px solid #1a7f37; }
+    .gutter-line.m-unresolved { background: #fff1a8; color: #24292f; font-weight: bold; border-left: 2px solid #ffea7f; }
+
+    textarea.result-editor { flex-grow: 1; border: none !important; border-radius: 0 !important; line-height: 1.5; outline: none; font-family: monospace; font-size: 13px; padding: 0 12px; margin: 0 !important; height: 100% !important; resize: none !important; background: #fff; color: #24292f; }
     .btn-action { padding: 4px 10px; font-size: 11px; font-weight: bold; border: 1px solid #d0d7de; border-radius: 4px; background: #fff; cursor: pointer; margin-left: 4px; transition: 0.1s; white-space: nowrap; display: inline-block; color: #24292f !important; }
     .btn-action.head { color: #cf222e !important; border-color: #ffc1c0; } .btn-action.head:hover { background: #ffebe9; }
     .btn-action.incoming { color: #1a7f37 !important; border-color: #8cd19d; } .btn-action.incoming:hover { background: #e6ffec; }
@@ -69,6 +77,15 @@
 
     footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #d0d7de; text-align: center; font-size: 13px; color: #57606a; }
     footer a { color: #0969da; text-decoration: none; font-weight: bold; } footer a:hover { text-decoration: underline; }
+
+  /* 最終マージ結果の行と採用色を視覚化するスタイル */
+  .result-editor-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    background: #fff;
+    height: 100%;
+    user-select: text;
+  }
   </style>
 </head>
 <body>
@@ -199,10 +216,9 @@
           <button class="btn-action" onclick="minifyResult()" style="background: #2da44e; color: white; border: none; padding: 5px 12px; margin-right: 5px;">▼ 最終結果を1行に圧縮する</button>
         </div>
         <div class="result-wrapper">
-          <div id="M-gutter" class="result-gutter">1</div>
+          <div id="M-gutter" class="result-gutter"></div>
           <textarea id="PM" class="result-editor" placeholder="マージされた結果がリアルタイムに組み立てられます" oninput="updateMergeGutter()" onkeyup="updateMergeGutter()" onpaste="updateMergeGutter()" onscroll="syncMergeGutter()"></textarea>
         </div>
-
         <div id="minifiedResultWrapper" style="display: none; padding: 12px; background: #fafafa; border-top: 1px solid #d0d7de;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
             <label style="margin: 0;">🚀 1行圧縮済み JSON (ビルド・配信用)</label>
@@ -706,19 +722,29 @@ function scrollResultToBlock(blockId) {
         targetLineIndex = accumulatedLines;
         break;
       }
-      if (block.type === 'common') accumulatedLines += block.lines.length;
-      else if (block.type === 'conflict') {
-        if (block.selected === 'unresolved') accumulatedLines += 3 + block.head.length + block.incoming.length;
-        else if (block.selected === 'head') accumulatedLines += block.head.length;
-        else if (block.selected === 'incoming') accumulatedLines += block.incoming.length;
-        else if (block.selected === 'both') accumulatedLines += block.head.length + block.incoming.length;
+      if (block.type === 'common') {
+        accumulatedLines += block.lines.length;
+      } else if (block.type === 'conflict') {
+        if (block.selected === 'unresolved') {
+          accumulatedLines += 3 + block.head.length + block.incoming.length;
+        } else if (block.selected === 'head') {
+          accumulatedLines += block.head.length;
+        } else if (block.selected === 'incoming') {
+          accumulatedLines += block.incoming.length;
+        } else if (block.selected === 'both') {
+          accumulatedLines += block.head.length + block.incoming.length;
+        }
       }
     }
   }
+
   if (targetLineIndex !== -1) {
-    const lineHeight = 19.5; 
+    const lineHeight = 19.5; // CSSで指定した行の高さ(1.5倍)
     const targetScrollTop = (targetLineIndex * lineHeight) - (editor.clientHeight / 2) + 20;
-    editor.scrollTo({ top: Math.max(0, targetScrollTop), behavior: 'smooth' });
+    editor.scrollTo({
+      top: Math.max(0, targetScrollTop),
+      behavior: 'smooth'
+    });
   }
 }
 
@@ -850,12 +876,60 @@ function syncScrollMerge(fromId, toId) {
   setTimeout(() => isSyncing = false, 20);
 }
 
+// テキストの累積行数から、現在の行番号に合わせて左帯を動的に染め直すコア関数
 function updateMergeGutter() {
-  const t = document.getElementById('PM'), g = document.getElementById('M-gutter'), lines = t.value.split('\n').length;
-  let txt = ''; for (let i = 1; i <= lines; i++) txt += i + '\n'; g.textContent = txt; syncMergeGutter();
+  const gutter = document.getElementById('M-gutter');
+  if (!gutter) return;
+  gutter.innerHTML = ''; // 一度クリア
+
+  let globalLineNum = 1;
+
+  // 組み立てられた mergedBlocks を上から走査し、各ブロックの行数分だけ色付きの行番号要素を生成
+  mergedBlocks.forEach(block => {
+    if (block.type === 'common') {
+      block.lines.forEach(() => {
+        createGutterLineElement(gutter, globalLineNum++, ''); // 通常行：背景色なし
+      });
+    } else if (block.type === 'conflict') {
+      if (block.selected === 'unresolved') {
+        // 未解決状態：Gitマーカー行は黄色、HEADは赤、Incomingは緑で行番号の背景を染める
+        createGutterLineElement(gutter, globalLineNum++, 'm-unresolved'); // <<<<<<<
+        block.head.forEach(() => createGutterLineElement(gutter, globalLineNum++, 'm-head'));
+        createGutterLineElement(gutter, globalLineNum++, 'm-unresolved'); // =======
+        block.incoming.forEach(() => createGutterLineElement(gutter, globalLineNum++, 'm-incoming'));
+        createGutterLineElement(gutter, globalLineNum++, 'm-unresolved'); // >>>>>>>
+      } else if (block.selected === 'head') {
+        // HEAD採用：解決した行数分だけ、行番号を「薄い赤」で染め続ける
+        block.head.forEach(() => createGutterLineElement(gutter, globalLineNum++, 'm-head'));
+      } else if (block.selected === 'incoming') {
+        // Incoming採用：解決した行数分だけ、行番号を「薄い緑」で染め続ける
+        block.incoming.forEach(() => createGutterLineElement(gutter, globalLineNum++, 'm-incoming'));
+      } else if (block.selected === 'both') {
+        // 両方採用：前半のHEAD部分は赤、後半のIncoming部分は緑で行番号を塗り分ける
+        block.head.forEach(() => createGutterLineElement(gutter, globalLineNum++, 'm-head'));
+        block.incoming.forEach(() => createGutterLineElement(gutter, globalLineNum++, 'm-incoming'));
+      }
+    }
+  });
+
+  // 手動編集でユーザーが行数を増やしたり減らしたりした場合のセーフティガード
+  // textareaの実際の総行数と、上記で計算した行番号の数にズレがある場合、末尾をプレーンな行番号で補完します
+  const actualTotalLines = document.getElementById('PM').value.split('\n').length;
+  while (globalLineNum <= actualTotalLines) {
+    createGutterLineElement(gutter, globalLineNum++, '');
+  }
 }
 
+// プレーンなtextareaのスクロールと、色付きの左帯（Gutter）のスクロールを1ピクセルのズレもなく完全同期させる関数
 function syncMergeGutter() { document.getElementById('M-gutter').scrollTop = document.getElementById('PM').scrollTop; }
+
+// 内部用ヘルパー：1行分の色付き行番号HTML要素を生成する
+function createGutterLineElement(parent, lineNum, colorClass) {
+  const lineEl = document.createElement('div');
+  lineEl.className = "gutter-line " + colorClass;
+  lineEl.innerText = lineNum;
+  parent.appendChild(lineEl);
+}
 
 function parseExpandAndBuild() {
   const src = document.getElementById('conflictMergeInput').value, L = document.getElementById('LM'), R = document.getElementById('RM');
@@ -938,39 +1012,59 @@ function addConflictHeader(parent, title, side, blockId) {
   contentDiv.appendChild(btnContainer); header.appendChild(numDiv); header.appendChild(contentDiv); parent.appendChild(header);
 }
 
+// ボタン切り替えロジック
 function selectBlockChoice(blockId, choice) {
-  const block = mergedBlocks.find(b => b.id === blockId); if (!block) return; if (block.selected === choice) return;
-  const editor = document.getElementById('PM'), currentText = editor.value; let searchStr = "";
-  if (block.selected === 'unresolved') {
-    const startMarker = "<<<<<<< HEAD (未解決の衝突 #" + blockId + ")", endMarker = ">>>>>>> Incoming (未解決の衝突 #" + blockId + ")";
-    const startIdx = currentText.indexOf(startMarker), endIdx = currentText.indexOf(endMarker);
-    if (startIdx !== -1 && endIdx !== -1) searchStr = currentText.substring(startIdx, endIdx + endMarker.length);
-  } else {
-    let previousLines = []; if (block.selected === 'head') previousLines = block.head; else if (block.selected === 'incoming') previousLines = block.incoming; else if (block.selected === 'both') previousLines = block.head.concat(block.incoming);
-    searchStr = previousLines.join('\n');
-  }
-  let replaceStr = ""; if (choice === 'head') replaceStr = block.head.join('\n'); else if (choice === 'incoming') replaceStr = block.incoming.join('\n'); else if (choice === 'both') replaceStr = block.head.concat(block.incoming).join('\n');
-  if (searchStr && currentText.includes(searchStr)) {
-    editor.value = currentText.replace(searchStr, replaceStr); block.selected = choice;
-    const btnH = document.getElementById("btn-head-" + blockId), btnI = document.getElementById("btn-inc-" + blockId), allBothBtns = document.querySelectorAll('[id="btn-both-' + blockId + '"]');
-    if (btnH) { btnH.className = 'btn-action head'; btnH.innerText = 'HEADを採用'; } if (btnI) { btnI.className = 'btn-action incoming'; btnI.innerText = 'Incomingを採用'; }
-    allBothBtns.forEach(btn => { btn.className = 'btn-action'; btn.innerText = '両方を残す'; });
-    if (choice === 'head' && btnH) { btnH.className = 'btn-action active-head'; btnH.innerText = '選択中: HEAD'; }
-    else if (choice === 'incoming' && btnI) { btnI.className = 'btn-action active-incoming'; btnI.innerText = '選択中: Incoming'; }
-    else if (choice === 'both') { allBothBtns.forEach(btn => { btn.className = 'btn-action active-both'; btn.innerText = '選択中: 両方を残す'; }); }
-    updateMergeGutter(); if (document.getElementById('syncResultScroll').checked) scrollResultToBlock(blockId);
-  } else { block.selected = choice; alert("⚠️ 衝突 #" + blockId + " のエリアが手動編集により変更されているため置換が制限されました。直接編集してください。"); }
+  const block = mergedBlocks.find(b => b.id === blockId);
+  if (!block) return;
+  if (block.selected === choice) return;
+
+  block.selected = choice;
+
+  const btnH = document.getElementById("btn-head-" + blockId);
+  const btnI = document.getElementById("btn-inc-" + blockId);
+  const allBothBtns = document.querySelectorAll('[id="btn-both-' + blockId + '"]');
+
+  if (btnH) { btnH.className = 'btn-action head'; btnH.innerText = 'HEADを採用'; }
+  if (btnI) { btnI.className = 'btn-action incoming'; btnI.innerText = 'Incomingを採用'; }
+  allBothBtns.forEach(btn => { btn.className = 'btn-action'; btn.innerText = '両方を残す'; });
+
+  if (choice === 'head' && btnH) { btnH.className = 'btn-action active-head'; btnH.innerText = '選択中: HEAD'; }
+  else if (choice === 'incoming' && btnI) { btnI.className = 'btn-action active-incoming'; btnI.innerText = '選択中: Incoming'; }
+  else if (choice === 'both') { allBothBtns.forEach(btn => { btn.className = 'btn-action active-both'; btn.innerText = '選択中: 両方を残す'; }); }
+
+  rebuildResultText();
 }
 
+// 純粋な文字列としてエディタテキストを組み立て、同時に左帯を染め直す関数
 function rebuildResultText() {
   let resultLines = [];
   mergedBlocks.forEach(block => {
-    if (block.type === 'common') resultLines = resultLines.concat(block.lines);
-    else if (block.type === 'conflict') {
-      resultLines.push("<<<<<<< HEAD (未解決の衝突 #" + block.id + ")"); resultLines = resultLines.concat(block.head); resultLines.push('======='); resultLines = resultLines.concat(block.incoming); resultLines.push(">>>>>>> Incoming (未解決の衝突 #" + block.id + ")");
+    if (block.type === 'common') {
+      resultLines = resultLines.concat(block.lines);
+    } else if (block.type === 'conflict') {
+      if (block.selected === 'unresolved') {
+        resultLines.push("<<<<<<< HEAD (未解決の衝突 #" + block.id + ")");
+        resultLines = resultLines.concat(block.head);
+        resultLines.push('=======');
+        resultLines = resultLines.concat(block.incoming);
+        resultLines.push(">>>>>>> Incoming (未解決の衝突 #" + block.id + ")");
+      } else if (block.selected === 'head') {
+        resultLines = resultLines.concat(block.head);
+      } else if (block.selected === 'incoming') {
+        resultLines = resultLines.concat(block.incoming);
+      } else if (block.selected === 'both') {
+        resultLines = resultLines.concat(block.head);
+        resultLines.push("/* --- ここから Incoming のコード --- */"); // 視覚的区切り用の安全なコメント
+        resultLines = resultLines.concat(block.incoming);
+      }
     }
   });
-  document.getElementById('PM').value = resultLines.join('\n'); updateMergeGutter();
+
+  // textareaの値を上書き
+  document.getElementById('PM').value = resultLines.join('\n');
+
+  // 左帯（Gutter）の色付き行番号を一斉に再計算してレンダリング
+  updateMergeGutter();
 }
 
 let minifyProtectedMarkers = [];
@@ -1115,18 +1209,30 @@ function injectSpacesToJSON(text) {
   return res;
 }
 
-// --- 展開時のコメントやインデントのゴミを100%排除して美しく1行化する圧縮関数 ---
+// 新しいHTML要素型エディタから文字を全集約して1行圧縮するメイン関数
 function minifyResult() {
-  const editor = document.getElementById('PM'), minifiedOut = document.getElementById('minifiedOut'), wrapper = document.getElementById('minifiedResultWrapper');
-  let text = editor.value.trim(); if (!text) return;
-  if (text.includes('<<<<<<< HEAD')) { if (!confirm('⚠️ まだ未解決のコンフリクトマーカーが残っています。このまま1行に圧縮しますか？')) return; }
+  const editor = document.getElementById('PM');
+  const minifiedOut = document.getElementById('minifiedOut');
+  const wrapper = document.getElementById('minifiedResultWrapper');
+  if (!editor) return;
+
+  //  textareaから直接、1文字の狂いもない純粋なテキストデータを取得
+  let text = editor.value.trim();
+  if (!text) return;
+  if (text.includes('<<<<<<< HEAD')) {
+    if (!confirm('⚠️ まだ未解決のコンフリクトマーカーが残っています。このまま1行に圧縮しますか？')) return;
+  }
+
+  // 視覚的区切り用コメントの残骸があれば、1行化の前にクレンジング
+  text = text.replace(/\/\* --- ここから Incoming のコード --- \*\//g, '');
 
   const isJavaScriptFormat = text.includes("JSON.parse(");
   let finalOutputText = "";
 
   if (isJavaScriptFormat) {
-    const lines = text.split('\n'); let processedLines = [];
+    const lines = text.split('\n');
     let inJSON = false, jsonBuffer = "", currentPrefix = "", currentQuote = "";
+    let processedLines = [];
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
@@ -1138,32 +1244,25 @@ function minifyResult() {
             inJSON = true;
             currentQuote = line[quoteIdx];
             currentPrefix = line.substring(0, quoteIdx + 1);
-            jsonBuffer = ""; // 開始行の残骸は溜めずにクリア
+            jsonBuffer = "";
             continue;
           }
         }
         processedLines.push(line);
       } else {
-        const endMarker = currentQuote + ")"; const endIdx = line.indexOf(endMarker);
+        const endMarker = currentQuote + ")";
+        const endIdx = line.indexOf(endMarker);
         if (endIdx !== -1) {
-          // 閉じ行の手前までの文字列をインデントを除去してバッファに合流
           let lastChunk = line.substring(0, endIdx).trim();
-          if (lastChunk && !lastChunk.includes("/* --- 埋め込みJSONを展開表示 --- */")) {
-            jsonBuffer += lastChunk;
-          }
+          if (lastChunk && !lastChunk.includes("/* --- 埋め込みJSONを展開表示 --- */")) jsonBuffer += lastChunk;
           const currentSuffix = line.substring(endIdx);
-          processedLines.push(currentPrefix + compressPureJSON(jsonBuffer) + currentSuffix); 
+          processedLines.push(currentPrefix + compressPureJSON(jsonBuffer) + currentSuffix);
           inJSON = false;
           jsonBuffer = "";
-        } else { 
-          // 展開用のコメント行は1行化の邪魔になるため完全に無視（スキップ）
+        } else {
           if (line.includes("/* --- 埋め込みJSONを展開表示 --- */")) continue;
-
-          // 各行の頭と後ろにある余計なインデントスペースを完全に削ぎ落として（trim）からバッファに結合
           let cleanedLine = line.trim();
-          if (cleanedLine) {
-            jsonBuffer += cleanedLine; 
-          }
+          if (cleanedLine) jsonBuffer += cleanedLine;
         }
       }
     }
@@ -1177,7 +1276,7 @@ function minifyResult() {
     finalOutputText = injectSpacesToJSON(finalOutputText);
   }
 
-  minifiedOut.value = finalOutputText; 
+  minifiedOut.value = finalOutputText;
   wrapper.style.display = 'block';
 
   window.scrollTo({
