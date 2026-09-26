@@ -310,7 +310,7 @@ function toP() {
   let raw = document.getElementById('S').value.trim(); if (!raw) return;
   try {
     const r = parseJ(raw);
-    let out = r.f ? r.d.map(o => JSON.stringify(o, null, 4)).join(',\n') + (r.comma ? ',' : '') : JSON.stringify(r.d, null, 4);
+    let out = r.f ? r.d.map(o => JSON.stringify(o, null, 2)).join(',\n') + (r.comma ? ',' : '') : JSON.stringify(r.d, null, 2);
     document.getElementById('P').value = rest(out); updateGutter();
   } catch (e) {
     document.getElementById('SE').innerText = "❌ JSON構文エラー: " + e.message; document.getElementById('SE').style.display = 'block';

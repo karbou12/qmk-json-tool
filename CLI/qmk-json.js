@@ -143,7 +143,7 @@ if (mode === '-p') {
   if (!rawInput) process.exit(0);
   try {
     const r = parseJ(rawInput);
-    let out = r.f ? r.d.map(o => JSON.stringify(o, null, 4)).join(',\n') + (r.comma ? ',' : '') : JSON.stringify(r.d, null, 4);
+    let out = r.f ? r.d.map(o => JSON.stringify(o, null, 2)).join(',\n') + (r.comma ? ',' : '') : JSON.stringify(r.d, null, 2);
     finalResult = rest(out);
   } catch (e) {
     console.error("❌ JSON構文エラー: 改行整形に失敗しました。", e.message);
