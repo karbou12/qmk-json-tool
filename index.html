@@ -9,7 +9,7 @@
     .header-container h2 { margin: 0; font-size: 20px; }
     .repo-link { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: bold; color: #57606a; text-decoration: none; padding: 6px 12px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; transition: 0.2s; }
     .repo-link:hover { background: #f6f8fa; color: #0969da; border-color: #0969da; }
-    
+
     /* タブ制御 */
     .tabs { display: flex; border-bottom: 2px solid #d0d7de; margin-bottom: 20px; gap: 5px; }
     .tab { padding: 10px 20px; cursor: pointer; background: #eaeef2; border: 1px solid #d0d7de; border-bottom: none; border-radius: 6px 6px 0 0; font-weight: bold; font-size: 14px; color: #57606a; transition: 0.2s; }
@@ -17,7 +17,7 @@
     .tab.active { background: #fff; border-color: #d0d7de; border-bottom: 2px solid #fff; color: #24292f; margin-bottom: -2px; }
     .tab-content { display: none; background: #fff; border: 1px solid #d0d7de; border-radius: 6px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .tab-content.active { display: block; }
-    
+
     /* 共通要素 */
     textarea { width: 100%; font-family: monospace; font-size: 13px; padding: 12px; box-sizing: border-box; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; resize: vertical; }
     textarea.input-area { height: 100px; }
@@ -29,7 +29,7 @@
     .btn-blue { background: #0969da; }
     .btn-gray { background: #656d76; margin-left: auto; }
     .error-msg { background: #ffebe9; color: #cf222e; font-size: 13px; padding: 8px 12px; border: 1px solid #ffc1c0; border-radius: 4px; display: none; font-family: monospace; white-space: pre-wrap; margin: 10px 0; }
-    
+
     /* 差分・3ペイン用共通スタイル */
     .diff-container { display: flex; width: 100%; height: 45vh; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; overflow: hidden; resize: vertical; min-height: 150px; max-height: 80vh; }
     .compare-row { display: flex; width: 100%; height: 40vh; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; overflow: hidden; resize: vertical; min-height: 150px; max-height: 80vh; }
@@ -40,33 +40,17 @@
     .line { display: flex; font-family: monospace; font-size: 12px; line-height: 20px; min-height: 20px; }
     .line-num { width: 55px; min-width: 55px; text-align: right; padding-right: 8px; color: #57606a; background: #f6f8fa; border-right: 1px solid #d0d7de; user-select: none; font-size: 11px; }
     .line-content { padding-left: 8px; white-space: pre-wrap; word-break: break-all; flex-grow: 1; }
-    .skip-line { background: #ddf4ff; color: #0969da; font-size: 12px; text-align: center; height: 24px; line-height: 24px; border-y: 1px dashed #d0d7de; user-select: none; }
+    .skip-line { background: #ddf4ff; color: #0969da; font-size: 12px; text-align: center; height: 24px; line-height: 24px; border-top: 1px dashed #d0d7de; border-bottom: 1px dashed #d0d7de; user-select: none; }
     .removed { background: #ffebe9; } .removed .line-num { background: #ffd8d4; }
     .added { background: #e6ffec; } .added .line-num { background: #ccffd8; }
     .empty { background: #fafafa; }
 
-    /* ジャンプで選択中の差分ブロックを強調するスタイル */
-    .line.focused-diff-line {
-      background: #fff8c5 !important; /* 薄い黄色 */
-      outline: 2px solid #fff1a8;   /* 少し濃い黄色の枠線 */
-      position: relative;
-      z-index: 1;
-    }
-    .line.focused-diff-line.removed {
-      background: #ffecf0 !important; /* 削除行用の選択カラー（少し濃い赤） */
-      outline: 2px solid #ffc1c0;
-    }
-    .line.focused-diff-line.added {
-      background: #dafbe1 !important; /* 追加行用の選択カラー（少し濃い緑） */
-      outline: 2px solid #8cd19d;
-    }
-
-    /* タブ1: 行番号エディタ専用スタイル */
+    /* タブ0: 行番号エディタ専用スタイル */
     .editor-wrapper { display: flex; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; overflow: hidden; height: 350px; resize: vertical; min-height: 150px; max-height: 80vh; }
     .editor-gutter { background: #f6f8fa; border-right: 1px solid #d0d7de; color: #57606a; text-align: right; padding: 12px 8px; font-family: monospace; font-size: 14px; line-height: 1.5; user-select: none; min-width: 45px; box-sizing: border-box; white-space: pre; overflow: hidden; }
     #P { border: none !important; border-radius: 0 !important; line-height: 1.5; outline: none; height: 100% !important; margin: 0 !important; resize: none !important; }
-    
-    /* タブ4: 3ペイン・マージ専用追加スタイル */
+
+    /* タブ3: 3ペイン・マージ専用追加スタイル */
     .conflict-block-head { background: #fff8c5; border-top: 1px dashed #d0d7de; border-bottom: 1px dashed #d0d7de; flex-wrap: wrap; height: auto !important; padding: 4px 0; }
     .conflict-block-head .line-num { background: #fff1a8; font-weight: bold; }
     .result-row { display: flex; flex-direction: column; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; overflow: hidden; margin-top: 15px; }
@@ -74,32 +58,34 @@
     .result-gutter { background: #f6f8fa; border-right: 1px solid #d0d7de; color: #57606a; text-align: right; padding: 12px 8px; font-family: monospace; font-size: 13px; line-height: 1.5; user-select: none; min-width: 55px; box-sizing: border-box; white-space: pre; overflow: hidden; }
     textarea.result-editor { flex-grow: 1; border: none !important; border-radius: 0 !important; line-height: 1.5; outline: none; font-family: monospace; font-size: 13px; padding: 12px; margin: 0 !important; height: 100% !important; resize: none !important; }
     .btn-action { padding: 4px 10px; font-size: 11px; font-weight: bold; border: 1px solid #d0d7de; border-radius: 4px; background: #fff; cursor: pointer; margin-left: 4px; transition: 0.1s; white-space: nowrap; display: inline-block; color: #24292f !important; }
-    .btn-action.head { color: #cf222e; border-color: #ffc1c0; } .btn-action.head:hover { background: #ffebe9; }
-    .btn-action.incoming { color: #1a7f37; border-color: #8cd19d; } .btn-action.incoming:hover { background: #e6ffec; }
+    .btn-action.head { color: #cf222e !important; border-color: #ffc1c0; } .btn-action.head:hover { background: #ffebe9; }
+    .btn-action.incoming { color: #1a7f37 !important; border-color: #8cd19d; } .btn-action.incoming:hover { background: #e6ffec; }
     .btn-action.active-head { background: #cf222e !important; color: #fff !important; border-color: #a40e1b !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15); }
     .btn-action.active-incoming { background: #1a7f37 !important; color: #fff !important; border-color: #115324 !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15); }
     .btn-action.active-both { background: #24292f !important; color: #fff !important; border-color: #050505 !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15); }
-    
+
+    /* ジャンプ中のフォーカスハイライト */
+    .line.focused-diff-line { outline: 2px solid #fff1a8; position: relative; z-index: 1; box-shadow: inset 0 0 4px rgba(255,241,168,0.5); }
+
     footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #d0d7de; text-align: center; font-size: 13px; color: #57606a; }
     footer a { color: #0969da; text-decoration: none; font-weight: bold; } footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
-
   <div class="header-container">
-    <h2>🛠️ QMK/ZMK用 1行JSON改行整形ツールキット</h2>
+    <h2>🛠️ QMK/ZMK用 JS & 1行JSON改行整形ツールキット</h2>
     <a href="https://github.com/karbou12/qmk-json-tool" target="_blank" rel="noopener noreferrer" class="repo-link">
       <svg height="16" viewBox="0 0 16 16" width="16" style="fill: currentColor;"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z"></path></svg>
-      GitHub Repository
+      ReadMe on GitHub Repository
     </a>
   </div>
 
   <!-- タブ選択メニュー -->
   <div class="tabs">
-    <div class="tab active" onclick="switchTab(0)">🔀 Minified(1行) ⇔  Prettified(改行整形)</div>
-    <div class="tab" onclick="switchTab(1)">🔍 Diff</div>
-    <div class="tab" onclick="switchTab(2)">⚡ Conflict</div>
-    <div class="tab" onclick="switchTab(3)">👑 🚀 Conflict Merge</div>
+    <div class="tab active" onclick="switchTab(0)">🔀  Minified ⇔  Prettified Editor</div>
+    <div class="tab" onclick="switchTab(1)">🔍  Diff Viewer</div>
+    <div class="tab" onclick="switchTab(2)">⚡ Conflict Viewer</div>
+    <div class="tab" onclick="switchTab(3)">👑 🚀  Conflict Merge Tool</div>
   </div>
 
   <!-- タブ0: 相互変換エディタ -->
@@ -108,8 +94,13 @@
     <textarea id="S" style="height:80px" placeholder="JSONデータを貼り付けてください"></textarea>
     <div id="SE" class="error-msg"></div>
     <div class="controls">
-      <button class="btn-blue" onclick="toP()">▼ 改行整形する (綺麗に展開)</button>
-      <button class="btn-green" onclick="toS()">▲ 1行に変換する (スペースなしミニファイ)</button>
+      <button class="btn-blue" onclick="toP()">▼ 改行整形</button>
+      <button class="btn-green" onclick="toS()">▲ 1行に変換</button>
+
+      <label style="border-left: 1px solid #ccc; padding-left: 15px; margin-left: 5px; font-size: 14px; font-weight: bold; color: #57606a; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+        <input type="checkbox" id="addSpaceTab0"> 📄 コロン・カンマの後にスペース挿入
+      </label>
+
       <button class="btn-gray" onclick="clr()">クリア</button>
     </div>
     <label>改行整形 JSON (編集用)</label>
@@ -123,16 +114,18 @@
   <!-- タブ1: JS & JSON 再差分 -->
   <div id="T1" class="tab-content">
     <label>Git diff テキスト入力</label>
-    <textarea id="diffInput" class="input-area" placeholder="ここにJSONを含むJavaScriptのdiffテキストを貼り付けてください"></textarea>
+    <textarea id="diffInput" class="input-area" placeholder="ここにJSONのみのdiffテキスト、または、JSON.Parse()を含むJavaScriptのdiffテキストを貼り付けてください"></textarea>
     <div class="controls">
-      <button class="btn-green" onclick="goDiff()">差分を解析して再比較する</button>
+      <button class="btn-green" onclick="goDiff()">JSONを改行整形して差分を再比較</button>
       <label style="margin:0"><input type="checkbox" id="useFilterD" checked> 💡 差分のみ絞り込む</label>
-      <span>( 前後 <input type="number" id="ctxD" value="3" style="width:40px;text-align:center;"> 行 )</span>
-      <label style="border-left:1px solid #ccc; padding-left:15px; margin:0"><input type="checkbox" id="syncScrollD" checked> 🔗 左右スクロール連動</label>
+      <span>( 前後 <input type="number" id="ctxD" value="3" min="1" step="1" oninput="if(this.value<1)this.value=1;" style="width:45px; text-align:center;"> 行 )</span>
+      <label style="border-left:1px solid #ccc; padding-left:15px; margin:0; font-weight: bold; color: #57606a;"><input type="checkbox" id="syncScrollD" checked> 🔗 左右スクロール連動</label>
+
       <span id="diffNavD" style="display: none; border-left: 1px solid #ccc; padding-left: 15px; margin-left: 5px; align-items: center; gap: 6px;">
         <button onclick="jumpDiffBlock(-1)" style="padding: 6px 12px; background: #fff; color: #24292f; border: 1px solid #d0d7de; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap;">⏮️ 前の差分</button>
         <button onclick="jumpDiffBlock(1)" style="padding: 6px 12px; background: #fff; color: #24292f; border: 1px solid #d0d7de; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap;">⏭️ 次の差分</button>
-        <span id="diffCountLabelD" style="font-size: 12px; font-weight: bold; color: #57606a; min-width: 45px; text-align: center;">0 / 0</span>
+        <input type="number" id="diffIdxInputD" value="0" min="0" step="1" onchange="jumpToSpecificBlockD()" style="width: 50px; text-align: center; border: 1px solid #d0d7de; border-radius: 4px; padding: 4px; font-weight: bold; color: #24292f;">
+        <span id="diffCountLabelD" style="font-size: 12px; font-weight: bold; color: #57606a; min-width: 30px;">/ 0</span>
       </span>
     </div>
     <div id="errorD" class="error-msg"></div>
@@ -145,16 +138,18 @@
   <!-- タブ2: コンフリクト表示 (閲覧用) -->
   <div id="T2" class="tab-content">
     <label>コンフリクトマーカー付きテキスト入力</label>
-    <textarea id="conflictInput" class="input-area" placeholder="ここにコンフリクトマーカー（<<<<<<<, =======, >>>>>>>）が含まれるコードを貼り付けてください"></textarea>
+    <textarea id="conflictInput" class="input-area" placeholder="ここにJSONのみのコンフリクトコード（<<<<<<<, =======, >>>>>>> を含む）、または、JSON.Parse()を含むJavascriptのコンフリクトコードを貼り付けてください"></textarea>
     <div class="controls">
-      <button class="btn-blue" onclick="goConflict()">コンフリクトを解析して比較する</button>
+      <button class="btn-blue" onclick="goConflict()">JSONを改行整形してコンフリクトを再比較</button>
       <label style="margin:0"><input type="checkbox" id="useFilterC" checked> 💡 差分のみ絞り込む</label>
-      <span>( 前後 <input type="number" id="ctxC" value="3" style="width:40px;text-align:center;"> 行 )</span>
-      <label style="border-left:1px solid #ccc; padding-left:15px; margin:0"><input type="checkbox" id="syncScrollC" checked> 🔗 左右スクロール連動</label>
+      <span>( 前後 <input type="number" id="ctxC" value="3" min="1" step="1" oninput="if(this.value<1)this.value=1;" style="width:45px; text-align:center;"> 行 )</span>
+      <label style="border-left:1px solid #ccc; padding-left:15px; margin:0; font-weight: bold; color: #57606a;"><input type="checkbox" id="syncScrollC" checked> 🔗 左右スクロール連動</label>
+
       <span id="diffNavC" style="display: none; border-left: 1px solid #ccc; padding-left: 15px; margin-left: 5px; align-items: center; gap: 6px;">
         <button onclick="jumpConflictBlock(-1)" style="padding: 6px 12px; background: #fff; color: #24292f; border: 1px solid #d0d7de; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap;">⏮️ 前の衝突</button>
         <button onclick="jumpConflictBlock(1)" style="padding: 6px 12px; background: #fff; color: #24292f; border: 1px solid #d0d7de; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap;">⏭️ 次の衝突</button>
-        <span id="diffCountLabelC" style="font-size: 12px; font-weight: bold; color: #57606a; min-width: 45px; text-align: center;">0 / 0</span>
+        <input type="number" id="diffIdxInputC" value="0" min="0" step="1" onchange="jumpToSpecificBlockC()" style="width: 50px; text-align: center; border: 1px solid #d0d7de; border-radius: 4px; padding: 4px; font-weight: bold; color: #24292f;">
+        <span id="diffCountLabelC" style="font-size: 12px; font-weight: bold; color: #57606a; min-width: 30px;">/ 0</span>
       </span>
     </div>
     <div id="errorC" class="error-msg"></div>
@@ -166,24 +161,25 @@
 
   <!-- タブ3: 1行JSON高度マージエディタ -->
   <div id="T3" class="tab-content">
-    <label>1行JSON コンフリクトマーカー付き入力</label>
-    <textarea id="conflictMergeInput" class="input-area" placeholder="ここに1行で衝突したコンフリクトコードを丸ごと貼り付けてください"></textarea>
+    <label>コンフリクトマーカー付きテキスト入力</label>
+    <textarea id="conflictMergeInput" class="input-area" placeholder="ここにJSONのみのコンフリクトコード（<<<<<<<, =======, >>>>>>> を含む）、または、JSON.Parse()を含むJavascriptのコンフリクトコードを貼り付けてください"></textarea>
     <div class="controls">
-      <button class="btn-blue" onclick="parseExpandAndBuild()" style="background: #0969da;">コンフリクトを改行整形して3画面展開</button>
-      
+      <button class="btn-blue" onclick="parseExpandAndBuild()" style="background: #0969da;">JSONを改行整形してコンフリクトを3画面展開</button>
+
       <label style="border-left: 1px solid #ccc; padding-left: 15px; margin-left: 5px; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; font-weight: bold; color: #57606a;">
-        <input type="checkbox" id="syncScrollCompare"> 🔗 左右スクロール連動
+        <input type="checkbox" id="syncScrollCompare" checked> 🔗 左右スクロール連動
       </label>
-      
+
       <label style="border-left: 1px solid #ccc; padding-left: 15px; margin-left: 5px; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; font-weight: bold; color: #57606a;">
         <input type="checkbox" id="syncResultScroll" checked> 🎯 選択時に結果画面を自動追従
       </label>
-      
-      <span id="conflictNav" style="display: none; border-left: 1px solid #ccc; padding-left: 15px; margin-left: 5px; align-items: center; gap: 6px;">
-        <button onclick="jumpConflict(-1)" style="padding: 6px 12px; background: #fff; color: #24292f; border: 1px solid #d0d7de; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap;">⏮️ 前の衝突</button>
-        <button onclick="jumpConflict(1)" style="padding: 6px 12px; background: #fff; color: #24292f; border: 1px solid #d0d7de; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap;">⏭️ 次の衝突</button>
-      <span id="conflictCountLabel" style="font-size: 12px; font-weight: bold; color: #57606a; min-width: 45px; text-align: center;">0 / 0</span>
-    </span>
+
+      <span id="conflictNav" style="display: none; border-left: 1px solid #ccc; padding-left: 15px; margin-left: 5px; align-items: center; gap: 8px;">
+        <button class="btn-action" onclick="jumpConflict(-1)" style="margin:0; padding:6px 12px;">⏮️ 前の衝突</button>
+        <button class="btn-action" onclick="jumpConflict(1)" style="margin:0; padding:6px 12px;">⏭️ 次の衝突</button>
+        <input type="number" id="mergeIdxInput" value="0" min="0" step="1" onchange="jumpToSpecificBlockMerge()" style="width: 50px; text-align: center; border: 1px solid #d0d7de; border-radius: 4px; padding: 4px; font-weight: bold; color: #24292f;">
+        <span id="conflictCountLabel" style="font-size: 12px; font-weight: bold; color: #57606a; min-width: 30px;">/ 0</span>
+      </span>
     </div>
 
     <div id="workspace" class="merge-workspace" style="display: none; flex-direction: column; gap: 15px;">
@@ -197,19 +193,24 @@
           <div id="RM" class="pane-content" onscroll="syncScrollMerge('RM', 'LM')"></div>
         </div>
       </div>
-      
       <div class="result-row">
         <div class="pane-title" style="border-bottom: 1px solid #d0d7de; display: flex; justify-content: space-between; align-items: center;">
           <span>📝 最終マージ結果（ここで手動編集も可能です）</span>
-          <button class="btn-action" onclick="minifyResult()" style="background: #2da44e; color: white; border: none; padding: 5px 12px; margin-right: 5px;">▲ 最終結果を1行に圧縮する</button>
+          <button class="btn-action" onclick="minifyResult()" style="background: #2da44e; color: white; border: none; padding: 5px 12px; margin-right: 5px;">▼ 最終結果を1行に圧縮する</button>
         </div>
         <div class="result-wrapper">
           <div id="M-gutter" class="result-gutter">1</div>
           <textarea id="PM" class="result-editor" placeholder="マージされた結果がリアルタイムに組み立てられます" oninput="updateMergeGutter()" onkeyup="updateMergeGutter()" onpaste="updateMergeGutter()" onscroll="syncMergeGutter()"></textarea>
         </div>
+
         <div id="minifiedResultWrapper" style="display: none; padding: 12px; background: #fafafa; border-top: 1px solid #d0d7de;">
-          <label style="margin-bottom: 5px;">🚀 1行圧縮済み JSON (ビルド・配信用)</label>
-          <textarea id="minifiedOut" style="height: 80px; background: #fff;" readonly onclick="this.select()" placeholder="ここに1行に圧縮されたデータが出力されます"></textarea>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <label style="margin: 0;">🚀 1行圧縮済み JSON (ビルド・配信用)</label>
+            <label style="margin: 0; font-size: 12px; font-weight: bold; color: #57606a; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+              <input type="checkbox" id="addSpaceAfterSeparator" onchange="minifyResult()"> 📄 コロン・カンマの後にスペースを挿入
+            </label>
+          </div>
+          <textarea id="minifiedOut" style="height: 240px; background: #fff;" readonly onclick="this.select()" placeholder="ここに1行に圧縮されたデータが出力されます"></textarea>
           <p style="font-size: 11px; color: #57606a; margin: 4px 0 0 0;">💡 テキストエリアをクリックすると全選択できます。そのままコピーしてご利用ください。</p>
         </div>
       </div>
@@ -217,17 +218,27 @@
   </div>
 
   <footer>
-    <p>Crafted with 🤖 <strong>Gemini</strong> &amp; 🧑‍💻 <strong>あなたの名前</strong></p>
+    <p>Crafted with 🤖 <strong>Gemini</strong> &amp; 🧑‍💻 <strong>Tano Karbou</strong></p>
     <div style="margin-top: 8px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-      <a href="https://github.com/karbou12" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 4px;">GitHub</a>
+      <a href="https://github.com/karbou12" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 4px;">
+        <svg height="14" viewBox="0 0 16 16" width="14" style="fill: currentColor; vertical-align: middle;"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z"/></svg>
+        GitHub
+      </a>
       <span style="color: #d0d7de;">|</span>
-      <a href="https://x.com/karbou_12" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 4px;">X (Twitter)</a>
+      <a href="https://x.com/karbou_12" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 4px;">
+        <svg height="12" viewBox="0 0 1200 1227" width="12" style="fill: currentColor; vertical-align: middle;"><path d="M714.163 519.284L1160.89 0H1055.03L661.856 456.963L352.097 0H0L468.492 681.821L0 1226.37H105.866L520.765 744.113L847.903 1226.37H1200L714.137 519.284H714.163ZM574.672 681.674L527.195 613.754L150.117 74.225H312.723L616.36 508.97L663.837 576.89L1055.08 1136.63H892.476L574.672 681.701V681.674Z"/></svg>
+          X (Twitter)
+      </a>
       <span style="color: #d0d7de;">|</span>
-      <a href="https://zenn.dev/karbou12" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 4px;">Zenn</a>
+      <a href="https://zenn.dev/karbou12" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 4px;">
+        <svg height="13" viewBox="0 0 24 24" width="13" style="fill: currentColor; vertical-align: middle;"><path d="M19.16 12.92c.62-.64.93-1.46.93-2.48 0-1.04-.33-1.87-.98-2.48-.65-.62-1.57-.92-2.77-.92H9.08v11.75h7.02c1.23 0 2.18-.3 2.85-.92.67-.61 1-.1.45 1.01-2.52 0-3.1-.38-3.1-1.12 0-.74-.1-.13-.3-.13H4.81c-1.3 0-2.34-.34-3.13-1.02C.89 12.94.5 12 .5 10.78c0-1.25.4-2.22 1.2-2.9.8-.68 1.87-1.02 3.22-1.02h2.24V4.74c0-1.32.35-2.33 1.05-3.03C8.91 1.01 9.94.66 11.3.66c1.33 0 2.34.34 3.03 1.03.7.69 1.04 1.7 1.04 3.05v2.12h1.16c1.88 0 3.32.49 4.34 1.48 1.01.98 1.52 2.36 1.52 4.12 0 1.69-.47 3.05-1.4 4.07-.94 1.02-2.3 1.53-4.08 1.53h-1.63v-2.1c1.8 0 2.92-.72 3.39-2.15z"/></svg>
+        Zenn
+      </a>
     </div>
   </footer>
 
 <script>
+
 // タブ切り替えロジック
 function switchTab(idx) {
   document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
@@ -245,11 +256,12 @@ function syncScrollPane(el, targetId, checkId) {
 }
 
 /* ==========================================================================
-   タブ0: JSON 相互変換用スクリプト
-   ========================================================================= */
+   タブ0: JSON 相互変換用スクリプト (QMK文字の形を100%守る最強ロジック)
+   ========================================================================== */
 let m = [];
+
 function prot(s) {
-  m = []; let inStr = false, i = 0, res = "", t = s.trim();
+  m = []; let inStr = false, i = 0, res = "", t = s;
   while (i < t.length) {
     let c = t[i], n1 = t[i+1], n2 = t[i+2], n3 = t[i+3];
     if (inStr && c === '\\') {
@@ -268,37 +280,44 @@ function prot(s) {
   }
   return res;
 }
+
 function rest(s) { let out = s; for (let i = m.length - 1; i >= 0; i--) out = out.replaceAll(m[i].id, m[i].v); return out; }
+
 function parseJ(s) {
   const t = prot(s);
   try { return { d: JSON.parse(t), f: false }; }
-  catch (e) { let c = t.endsWith(',') ? t.slice(0, -1) : t; try { return { d: JSON.parse("[" + c + "]"), f: true }; } catch (e2) { throw e; } }
+  catch (e) { let c = t.trim(); let comma = c.endsWith(','); if (comma) c = c.slice(0, -1); try { return { d: JSON.parse("[" + c + "]"), f: true, comma: comma }; } catch (e2) { throw e; } }
 }
+
 function toP() {
   document.getElementById('SE').style.display = 'none';
   let raw = document.getElementById('S').value.trim(); if (!raw) return;
-  let comma = raw.endsWith(','); if (comma) raw = raw.slice(0, -1);
   try {
     const r = parseJ(raw);
-    let out = r.f ? r.d.map(o => JSON.stringify(o, null, 4)).join(',\n') + (comma ? ',' : '') : JSON.stringify(r.d, null, 4);
+    let out = r.f ? r.d.map(o => JSON.stringify(o, null, 4)).join(',\n') + (r.comma ? ',' : '') : JSON.stringify(r.d, null, 4);
     document.getElementById('P').value = rest(out); updateGutter();
   } catch (e) {
     document.getElementById('SE').innerText = "❌ JSON構文エラー: " + e.message; document.getElementById('SE').style.display = 'block';
-    document.getElementById('P').value = raw.replace(/\{/g, '{\n ').replace(/\}/g, '\n}').replace(/,/g, ',\n ') + (comma ? ',' : ''); updateGutter();
+    document.getElementById('P').value = raw; updateGutter();
   }
 }
+
 function toS() {
   document.getElementById('PE').style.display = 'none';
   let raw = document.getElementById('P').value.trim(); if (!raw) return;
-  let comma = raw.endsWith(','); if (comma) raw = raw.slice(0, -1);
   try {
-    const r = parseJ(raw); let out = r.f ? r.d.map(o => JSON.stringify(o)).join(',') + (comma ? ',' : '') : JSON.stringify(r.d);
-    document.getElementById('S').value = rest(out);
+    const r = parseJ(raw); let out = r.f ? r.d.map(o => JSON.stringify(o)).join(',') + (r.comma ? ',' : '') : JSON.stringify(r.d);
+    let finalOutput = rest(out);
+    if (document.getElementById('addSpaceTab0').checked) { finalOutput = injectSpacesToJSON(finalOutput); }
+    document.getElementById('S').value = finalOutput;
   } catch (e) {
-    document.getElementById('PE').innerText = "❌ JSON構文エラー: " + e.message + "\n⚠️外側のインデントのみを除去しました。"; document.getElementById('PE').style.display = 'block';
-    document.getElementById('S').value = raw.split('\n').map(l => l.replace(/^\s+/, '')).join('') + (comma ? ',' : '');
+    document.getElementById('PE').innerText = "❌ JSON構文エラー: " + e.message; document.getElementById('PE').style.display = 'block';
+    let fallbackOut = raw.split('\n').map(l => l.replace(/^\s+/, '')).join('');
+    if (document.getElementById('addSpaceTab0').checked) { fallbackOut = injectSpacesToJSON(fallbackOut); }
+    document.getElementById('S').value = fallbackOut;
   }
 }
+
 function clr() { document.getElementById('SE').style.display = document.getElementById('PE').style.display = 'none'; document.getElementById('S').value = document.getElementById('P').value = ''; m = []; updateGutter(); }
 function updateGutter() {
   const t = document.getElementById('P'), g = document.getElementById('P-gutter'), lines = t.value.split('\n').length;
@@ -307,19 +326,67 @@ function updateGutter() {
 function syncGutter() { document.getElementById('P-gutter').scrollTop = document.getElementById('P').scrollTop; }
 
 /* ==========================================================================
-   タブ1・2共通: 閲覧用LCS·差分表示スクリプト
+   タブ1・2共通: 閲覧用LCS・差分表示スクリプト
    ========================================================================== */
 function expandLineWithJSON_View(line) {
-  const match = line.match(/JSON\.parse\((['"`])([\s\S]*?)\1\)/); if (!match) return [line];
-  const fullMatch = match[0], quoteType = match[1]; let jsonStr = match[2];
-  try { jsonStr = new Function("return " + quoteType + jsonStr + quoteType)(); } catch(e) {}
-  try {
-    const parsedObj = JSON.parse(jsonStr), prettyLines = JSON.stringify(parsedObj, null, 2).split('\n');
-    const prefix = line.substring(0, line.indexOf(fullMatch)), suffix = line.substring(line.indexOf(fullMatch) + fullMatch.length);
-    let res = [prefix + "JSON.parse(" + quoteType + " /* --- 埋め込みJSONを展開表示 --- */"];
-    prettyLines.forEach(l => res.push("      " + l)); res.push("    " + quoteType + ")" + suffix); return res;
-  } catch (e) { return [line]; }
+  const trimmed = line.trim(); if (!trimmed) return [line];
+  const hasJsonParse = line.includes("JSON.parse(");
+
+  if (hasJsonParse) {
+    // 【ケースA】JavaScriptに埋め込まれたJSON
+    // 1. まずは正規表現でクォートのペアが正しく揃っているかチェック
+    let match = line.match(/JSON\.parse\((['"`])([\s\S]*?)\1\)/);
+    let quoteType = match ? match[1] : "'";
+    let jsonStr = match ? match[2] : "";
+    let fullMatch = match ? match[0] : "";
+
+    // 2. 【フォールバック】クォートが片方消失している場合の救済処理
+    if (!match) {
+      const startIdx = line.indexOf("JSON.parse(");
+      const contentStart = startIdx + "JSON.parse(".length;
+      let bracketContent = line.substring(contentStart);
+
+      const jsonStartIdx = bracketContent.search(/[\{\[]/);
+      const jsonEndIdx = bracketContent.lastIndexOf("}");
+      const jsonEndIdx2 = bracketContent.lastIndexOf("]");
+      const finalEndIdx = Math.max(jsonEndIdx, jsonEndIdx2);
+
+      if (jsonStartIdx !== -1 && finalEndIdx !== -1 && finalEndIdx > jsonStartIdx) {
+        // 不正なコードの隙間から純粋なJSON部分だけを強制抽出
+        jsonStr = bracketContent.substring(jsonStartIdx, finalEndIdx + 1);
+        fullMatch = line.substring(startIdx, line.lastIndexOf(")") + 1);
+        quoteType = "'"; // 消失した開始クォートをシングルクォートで自動補完
+      } else {
+        return [line]; // JSONの構造をしていない場合は諦めてそのまま返す
+      }
+    }
+
+    const protectedJson = prot(jsonStr);
+    try {
+      let parsedObj;
+      try { parsedObj = JSON.parse(protectedJson); } catch(e) { parsedObj = JSON.parse("[" + (protectedJson.endsWith(',') ? protectedJson.slice(0, -1) : protectedJson) + "]"); }
+      const prettyLines = JSON.stringify(parsedObj, null, 2).split('\n');
+      const prefix = line.substring(0, line.indexOf(fullMatch)), suffix = line.substring(line.indexOf(fullMatch) + fullMatch.length);
+
+      let res = [prefix + "JSON.parse(" + quoteType + " /* --- 埋め込みJSONを展開表示 --- */"];
+      prettyLines.forEach(l => res.push("      " + rest(l))); 
+      res.push("    " + quoteType + ")" + suffix); 
+      return res;
+    } catch (e) { return [line]; }
+  } else {
+    // 【ケースB】素のJSON
+    if (!trimmed.startsWith('{') && !trimmed.startsWith('[') && !trimmed.endsWith('}') && !trimmed.endsWith(']')) return [line];
+    let cleanTarget = trimmed; let hasTrailingComma = cleanTarget.endsWith(','); if (hasTrailingComma) cleanTarget = cleanTarget.slice(0, -1);
+    const protectedJson = prot(cleanTarget);
+    try {
+      const parsedObj = JSON.parse(protectedJson), prettyLines = JSON.stringify(parsedObj, null, 2).split('\n');
+      const leadingSpaces = line.substring(0, line.indexOf(trimmed)); let res = [];
+      prettyLines.forEach((l, idx) => { const suffixComma = (idx === prettyLines.length - 1 && hasTrailingComma) ? "," : ""; res.push(leadingSpaces + rest(l) + suffixComma); });
+      return res;
+    } catch (e) { return [line]; }
+  }
 }
+
 function calcLCS(O, N) {
   let m = O.length, n = N.length, dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
   for (let i = 1; i <= m; i++) { for (let j = 1; j <= n; j++) { dp[i][j] = (O[i - 1] === N[j - 1]) ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1]); } }
@@ -331,19 +398,21 @@ function calcLCS(O, N) {
   }
   return res;
 }
+
 function renderViewDiff(raw, filter, ctx, L, R) {
   let lN = 1, rN = 1, mid = raw.map(x => ({ ...x, lIdx: (x.t==='c'||x.t==='m')?lN++:null, rIdx: (x.t==='c'||x.t==='p')?rN++:null, isD: (x.t==='m'||x.t==='p'), show: !filter }));
   if (filter) { for (let i = 0; i < mid.length; i++) { if (mid[i].isD) { for (let k = Math.max(0, i - ctx); k <= Math.min(mid.length - 1, i + ctx); k++) mid[k].show = true; } } }
   let skip = false;
   mid.forEach(x => {
     if (x.show) {
-      if (skip) { addL(L, '', '・・・ [ 省略部分 ] ・・・', 'skip-line'); addL(R, '', '・・・ [ 省略部分 ] ・・・', 'skip-line'); skip = false; }
+      if (skip) { addL(L, '', '・・・ [ 省略部分 ] ・・・', 'skip-line'); addL(R, '', '・・・ [ 省略部分 ] ・微調整 ・・・', 'skip-line'); skip = false; }
       if (x.t === 'c') { addL(L, x.lIdx, x.v, ''); addL(R, x.rIdx, x.v, ''); }
       else if (x.t === 'm') { addL(L, x.lIdx, x.v, 'removed'); addL(R, '', '', 'empty'); }
       else if (x.t === 'p') { addL(L, '', '', 'empty'); addL(R, x.rIdx, x.v, 'added'); }
     } else { skip = true; }
   });
 }
+
 function addL(p, n, t, c) {
   const row = document.createElement('div'); row.className = "line " + c;
   const num = document.createElement('div'); num.className = 'line-num'; num.innerText = n;
@@ -353,10 +422,9 @@ function addL(p, n, t, c) {
 
 function goDiff() {
   const src = document.getElementById('diffInput').value, L = document.getElementById('LD'), R = document.getElementById('RD');
-  L.innerHTML = R.innerHTML = ''; document.getElementById('errorD').style.display = 'none';
-  if (!src.trim()) return;
+  L.innerHTML = R.innerHTML = ''; document.getElementById('errorD').style.display = 'none'; if (!src.trim()) return;
   let lRaw = [], rRaw = [];
-  src.split('\n').forEach(l => {
+  src.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n').forEach(l => {
     if (l.startsWith('diff --git') || l.startsWith('index ') || l.startsWith('--- ') || l.startsWith('+++ ') || l.startsWith('@@ ')) return;
     if (l.startsWith('-')) lRaw.push(l.slice(1)); else if (l.startsWith('+')) rRaw.push(l.slice(1));
     else { const c = l.startsWith(' ') ? l.slice(1) : l; lRaw.push(c); rRaw.push(c); }
@@ -364,124 +432,303 @@ function goDiff() {
   let lLines = [], rLines = [];
   lRaw.forEach(line => lLines = lLines.concat(expandLineWithJSON_View(line)));
   rRaw.forEach(line => rLines = rLines.concat(expandLineWithJSON_View(line)));
-  renderViewDiff(calcLCS(lLines, rLines), document.getElementById('useFilterD').checked, parseInt(document.getElementById('ctxD').value)||0, L, R);
+
+  // もし不正な値が入っていた場合も、Math.max(1, ...) で確実に1以上の整数に強制修正
+  let contextLinesD = Math.max(1, Math.floor(parseInt(document.getElementById('ctxD').value) || 3));
+  document.getElementById('ctxD').value = contextLinesD; // 画面の表示値も正しい整数に補正
+  renderViewDiff(calcLCS(lLines, rLines), document.getElementById('useFilterD').checked, contextLinesD, L, R);
   document.getElementById('viewD').style.display = 'flex';
-
-  // 👇【修正版】連続する変更を1つの「塊」として束ねてジャンプ対象にするロジック
-  currentDiffIndexD = -1;
-  diffElementsD = [];
-
-  const allLinesL = Array.from(L.querySelectorAll('.line'));
-  const allLinesR = Array.from(R.querySelectorAll('.line'));
-  const maxLines = Math.max(allLinesL.length, allLinesR.length);
-
-  let inChangeBlock = false;
-
-  for (let i = 0; i < maxLines; i++) {
-    const isRemoved = allLinesL[i] && allLinesL[i].classList.contains('removed');
-    const isAdded = allLinesR[i] && allLinesR[i].classList.contains('added');
-    const isSkip = (allLinesL[i] && allLinesL[i].classList.contains('skip-line')) || 
-                   (allLinesR[i] && allLinesR[i].classList.contains('skip-line'));
-
-    if (isRemoved || isAdded || isSkip) {
-      if (!inChangeBlock) {
-        const targetEl = isAdded ? allLinesR[i] : allLinesL[i];
-        diffElementsD.push(targetEl);
-        
-        // 👈【重要】後続の処理で塊全体を光らせるため、この行が属する「塊の行数」をあらかじめ数えてデータに仕込んでおく
-        targetEl.dataset.blockLength = 1;
-        inChangeBlock = true;
-      } else {
-        // 現在の塊のカウントを増やす
-        if (diffElementsD.length > 0) {
-          diffElementsD[diffElementsD.length - 1].dataset.blockLength = 
-            parseInt(diffElementsD[diffElementsD.length - 1].dataset.blockLength) + 1;
-        }
-      }
-    } else {
-      inChangeBlock = false;
-    }
-  }
-
-  const navElD = document.getElementById('diffNavD');
-  const labelElD = document.getElementById('diffCountLabelD');
-
-  if (diffElementsD.length > 0) {
-    navElD.style.display = 'inline-flex';
-    labelElD.innerText = "0 / " + diffElementsD.length;
-  } else {
-    navElD.style.display = 'none';
-  }
+  initDiffJumpD(L, R);
 }
 
 function goConflict() {
   const src = document.getElementById('conflictInput').value, L = document.getElementById('LC'), R = document.getElementById('RC');
-  L.innerHTML = R.innerHTML = ''; document.getElementById('errorC').style.display = 'none';
-  if (!src.trim()) return;
+  L.innerHTML = R.innerHTML = ''; document.getElementById('errorC').style.display = 'none'; if (!src.trim()) return;
   let lRaw = [], rRaw = [], mode = 'common';
-  src.split('\n').forEach(l => {
+  src.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n').forEach(l => {
     if (l.startsWith('<<<<<<<')) mode = 'left'; else if (l.startsWith('=======')) mode = 'right'; else if (l.startsWith('>>>>>>>')) mode = 'common';
     else { if (mode === 'common') { lRaw.push(l); rRaw.push(l); } else if (mode === 'left') lRaw.push(l); else if (mode === 'right') rRaw.push(l); }
   });
   let lLines = [], rLines = [];
   lRaw.forEach(line => lLines = lLines.concat(expandLineWithJSON_View(line)));
   rRaw.forEach(line => rLines = rLines.concat(expandLineWithJSON_View(line)));
-  renderViewDiff(calcLCS(lLines, rLines), document.getElementById('useFilterC').checked, parseInt(document.getElementById('ctxC').value)||0, L, R);
+  // もし不正な値が入っていた場合も、Math.max(1, ...) で確実に1以上の整数に強制修正
+  let contextLinesC = Math.max(1, Math.floor(parseInt(document.getElementById('ctxC').value) || 3));
+  document.getElementById('ctxC').value = contextLinesC; // 画面の表示値も正しい整数に補正
+  renderViewDiff(calcLCS(lLines, rLines), document.getElementById('useFilterC').checked, contextLinesC, L, R);
   document.getElementById('viewC').style.display = 'flex';
+  initDiffJumpC(L, R);
+}
 
-  // 👇【追記】コンフリクト表示用のジャンプ初期化ロジック
-  currentDiffIndexC = -1;
-  diffElementsC = [];
-
-  const allLinesL = Array.from(L.querySelectorAll('.line'));
-  const allLinesR = Array.from(R.querySelectorAll('.line'));
-  const maxLines = Math.max(allLinesL.length, allLinesR.length);
-
-  let inChangeBlock = false;
-
-  for (let i = 0; i < maxLines; i++) {
-    const isRemoved = allLinesL[i] && allLinesL[i].classList.contains('removed');
-    const isAdded = allLinesR[i] && allLinesR[i].classList.contains('added');
-    const isSkip = (allLinesL[i] && allLinesL[i].classList.contains('skip-line')) || 
-                   (allLinesR[i] && allLinesR[i].classList.contains('skip-line'));
-
-    if (isRemoved || isAdded || isSkip) {
-      if (!inChangeBlock) {
-        const targetEl = isAdded ? allLinesR[i] : allLinesL[i];
-        diffElementsC.push(targetEl);
-        targetEl.dataset.blockLength = 1;
-        inChangeBlock = true;
-      } else {
-        if (diffElementsC.length > 0) {
-          diffElementsC[diffElementsC.length - 1].dataset.blockLength = 
-            parseInt(diffElementsC[diffElementsC.length - 1].dataset.blockLength) + 1;
-        }
-      }
-    } else {
-      inChangeBlock = false;
-    }
+/* ==========================================================================
+   タブ1用：ジャンプ＆ハイライトシステム (EditBox入力・0基点制御)
+   ========================================================================== */
+let currentDiffIndexD = -1; let diffElementsD = [];
+function initDiffJumpD(L, R) {
+  currentDiffIndexD = -1; diffElementsD = [];
+  const allL = Array.from(L.querySelectorAll('.line')), allR = Array.from(R.querySelectorAll('.line'));
+  let inB = false;
+  for (let i = 0; i < Math.max(allL.length, allR.length); i++) {
+    const isD = (allL[i] && allL[i].classList.contains('removed')) || (allR[i] && allR[i].classList.contains('added')) || (allL[i] && allL[i].classList.contains('skip-line'));
+    if (isD) { if (!inB) { const target = (allR[i] && allR[i].classList.contains('added')) ? allR[i] : allL[i]; diffElementsD.push(target); target.dataset.blockLength = 1; inB = true; } else if (diffElementsD.length > 0) { diffElementsD[diffElementsD.length - 1].dataset.blockLength = parseInt(diffElementsD[diffElementsD.length - 1].dataset.blockLength) + 1; } } else { inB = false; }
   }
+  const nav = document.getElementById('diffNavD'), input = document.getElementById('diffIdxInputD'), lbl = document.getElementById('diffCountLabelD');
+  if (diffElementsD.length > 0) { 
+    nav.style.display = 'inline-flex'; 
+    input.value = "0";
+    input.max = diffElementsD.length;
+    lbl.innerText = "/ " + diffElementsD.length; 
+  } else { nav.style.display = 'none'; }
+}
 
-  const navElC = document.getElementById('diffNavC');
-  const labelElC = document.getElementById('diffCountLabelC');
+function jumpDiffBlock(direction) {
+  if (diffElementsD.length === 0) return;
+  currentDiffIndexD += direction;
+  if (currentDiffIndexD < 0) currentDiffIndexD = diffElementsD.length - 1;
+  else if (currentDiffIndexD >= diffElementsD.length) currentDiffIndexD = 0;
+  executeDiffScrollAndHighlightD();
+}
 
-  if (diffElementsC.length > 0) {
-    navElC.style.display = 'inline-flex';
-    labelElC.innerText = "0 / " + diffElementsC.length;
-  } else {
-    navElC.style.display = 'none';
+function jumpToSpecificBlockD() {
+  if (diffElementsD.length === 0) return;
+  const input = document.getElementById('diffIdxInputD');
+  let val = Math.floor(parseInt(input.value) || 0);
+
+  if (val < 0) val = 0;
+  if (val > diffElementsD.length) val = diffElementsD.length;
+  input.value = val;
+
+  if (val === 0) {
+    document.querySelectorAll('.focused-diff-line').forEach(el => el.classList.remove('focused-diff-line'));
+    currentDiffIndexD = -1;
+    document.getElementById('LD').scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('RD').scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  currentDiffIndexD = val - 1;
+  executeDiffScrollAndHighlightD();
+}
+
+function executeDiffScrollAndHighlightD() {
+  document.querySelectorAll('.focused-diff-line').forEach(el => el.classList.remove('focused-diff-line'));
+  const target = diffElementsD[currentDiffIndexD];
+  if (target) {
+    const parent = target.parentNode, idx = Array.from(parent.querySelectorAll('.line')).indexOf(target), finalY = Math.max(0, (idx * 20) - (parent.clientHeight / 2) + 10);
+    document.getElementById('LD').scrollTo({ top: finalY, behavior: 'smooth' }); document.getElementById('RD').scrollTo({ top: finalY, behavior: 'smooth' });
+    const len = parseInt(target.dataset.blockLength) || 1, lL = document.getElementById('LD').querySelectorAll('.line'), rL = document.getElementById('RD').querySelectorAll('.line');
+    for (let k = 0; k < len; k++) { if (lL[idx+k]) lL[idx+k].classList.add('focused-diff-line'); if (rL[idx+k]) rL[idx+k].classList.add('focused-diff-line'); }
+    document.getElementById('diffIdxInputD').value = currentDiffIndexD + 1;
   }
 }
+
 /* ==========================================================================
-   タブ3 (マージ画面専用): 1行JSON高度マージ・大展開スクリプト
+   タブ2用：ジャンプ＆ハイライトシステム (EditBox入力・0基点制御)
    ========================================================================== */
-let mergedBlocks = [];
-let currentConflictIndex = -1;
-let conflictHeaderElements = [];
-let mergeProtectedMarkers = [];
+let currentDiffIndexC = -1; let diffElementsC = [];
+function initDiffJumpC(L, R) {
+  currentDiffIndexC = -1; diffElementsC = [];
+  const allL = Array.from(L.querySelectorAll('.line')), allR = Array.from(R.querySelectorAll('.line'));
+  let inB = false;
+  for (let i = 0; i < Math.max(allL.length, allR.length); i++) {
+    const isD = (allL[i] && allL[i].classList.contains('removed')) || (allR[i] && allR[i].classList.contains('added')) || (allL[i] && allL[i].classList.contains('skip-line'));
+    if (isD) { if (!inB) { const target = (allR[i] && allR[i].classList.contains('added')) ? allR[i] : allL[i]; diffElementsC.push(target); target.dataset.blockLength = 1; inB = true; } else if (diffElementsC.length > 0) { diffElementsC[diffElementsC.length - 1].dataset.blockLength = parseInt(diffElementsC[diffElementsC.length - 1].dataset.blockLength) + 1; } } else { inB = false; }
+  }
+  const nav = document.getElementById('diffNavC'), input = document.getElementById('diffIdxInputC'), lbl = document.getElementById('diffCountLabelC');
+  if (diffElementsC.length > 0) { 
+    nav.style.display = 'inline-flex'; 
+    input.value = "0";
+    input.max = diffElementsC.length;
+    lbl.innerText = "/ " + diffElementsC.length; 
+  } else { nav.style.display = 'none'; }
+}
+
+function jumpConflictBlock(direction) {
+  if (diffElementsC.length === 0) return;
+  currentDiffIndexC += direction;
+  if (currentDiffIndexC < 0) currentDiffIndexC = diffElementsC.length - 1; else if (currentDiffIndexC >= diffElementsC.length) currentDiffIndexC = 0;
+  executeDiffScrollAndHighlightC();
+}
+
+function jumpToSpecificBlockC() {
+  if (diffElementsC.length === 0) return;
+  const input = document.getElementById('diffIdxInputC');
+  let val = Math.floor(parseInt(input.value) || 0);
+  
+  if (val < 0) val = 0;
+  if (val > diffElementsC.length) val = diffElementsC.length;
+  input.value = val;
+
+  if (val === 0) {
+    document.querySelectorAll('.focused-diff-line').forEach(el => el.classList.remove('focused-diff-line'));
+    currentDiffIndexC = -1;
+    document.getElementById('LC').scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('RC').scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  currentDiffIndexC = val - 1;
+  executeDiffScrollAndHighlightC();
+}
+
+function executeDiffScrollAndHighlightC() {
+  document.querySelectorAll('.focused-diff-line').forEach(el => el.classList.remove('focused-diff-line'));
+  const target = diffElementsC[currentDiffIndexC];
+  if (target) {
+    const parent = target.parentNode, idx = Array.from(parent.querySelectorAll('.line')).indexOf(target), finalY = Math.max(0, (idx * 20) - (parent.clientHeight / 2) + 10);
+    document.getElementById('LC').scrollTo({ top: finalY, behavior: 'smooth' }); document.getElementById('RC').scrollTo({ top: finalY, behavior: 'smooth' });
+    const len = parseInt(target.dataset.blockLength) || 1, lL = document.getElementById('LC').querySelectorAll('.line'), rL = document.getElementById('RC').querySelectorAll('.line');
+    for (let k = 0; k < len; k++) { if (lL[idx+k]) lL[idx+k].classList.add('focused-diff-line'); if (rL[idx+k]) rL[idx+k].classList.add('focused-diff-line'); }
+    document.getElementById('diffIdxInputC').value = currentDiffIndexC + 1;
+  }
+}
+
+/* ==========================================================================
+   タブ3用：ジャンプ＆最終マージ自動追従システム (EditBox入力・0基点制御)
+   ========================================================================== */
+function initMergeJumpUI() {
+  const navEl = document.getElementById('conflictNav');
+  const inputEl = document.getElementById('mergeIdxInput');
+  const labelEl = document.getElementById('conflictCountLabel');
+
+  if (conflictHeaderElements.length > 0) {
+    navEl.style.display = 'inline-flex';
+    inputEl.value = "0";
+    inputEl.max = conflictHeaderElements.length;
+    labelEl.innerText = "/ " + conflictHeaderElements.length;
+  } else {
+    navEl.style.display = 'none';
+  }
+}
+
+function jumpConflict(direction) {
+  if (conflictHeaderElements.length === 0) return;
+  currentConflictIndex += direction;
+
+  // ループ制御
+  if (currentConflictIndex < 0) currentConflictIndex = conflictHeaderElements.length - 1;
+  else if (currentConflictIndex >= conflictHeaderElements.length) currentConflictIndex = 0;
+
+  executeMergeScrollAndHighlight();
+}
+
+function jumpToSpecificBlockMerge() {
+  if (conflictHeaderElements.length === 0) return;
+  const input = document.getElementById('mergeIdxInput');
+  let val = Math.floor(parseInt(input.value) || 0);
+
+  if (val < 0) val = 0;
+  if (val > conflictHeaderElements.length) val = conflictHeaderElements.length;
+  input.value = val;
+
+  if (val === 0) {
+    currentConflictIndex = -1;
+    document.getElementById('LM').scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('RM').scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('PM').scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  currentConflictIndex = val - 1;
+  executeMergeScrollAndHighlight();
+}
+
+// 左右のスクロール基準位置（アンカー）を記憶するグローバル変数
+let lastAnchorScrollTopL = 0;
+let lastAnchorScrollTopR = 0;
+let isJumpProcessingM = false;
+
+function executeMergeScrollAndHighlight() {
+  const targetElement = conflictHeaderElements[currentConflictIndex];
+  if (targetElement) {
+    const originalWindowScrollTop = window.scrollY;
+
+    // 1. 【強力ロック】自動スクロール中に余計な相対スクロールイベントが割り込むのを完全にシャットアウト
+    isJumpProcessingM = true;
+
+    const currentBlockId = targetElement.id.replace("head-header-", "");
+    const correctRightHeader = document.getElementById("incoming-header-" + currentBlockId);
+
+    const leftPane = document.getElementById('LM');
+    const rightPane = document.getElementById('RM');
+
+    // 2. 【スムーズスクロール（smooth）】心地よいスーッという移動アニメーション
+    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (correctRightHeader) {
+      correctRightHeader.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // 外側のブラウザ全体の画面が勝手に動くのを元の位置に引き戻して完全固定（ロック）
+    window.scrollTo(0, originalWindowScrollTop);
+    setTimeout(() => { window.scrollTo(0, originalWindowScrollTop); }, 20);
+
+    // 3. 左ペイン（LM）が「完全に目的地に到着してピタッと止まった瞬間（scrollend）」をブラウザに100%正確に検知させます。
+    const onScrollEndM = () => {
+      // 完全に静止した時点の正確な「左右の実測スクロール位置」を、新しい完璧な相対連動のアンカーとして記憶！
+      lastAnchorScrollTopL = leftPane.scrollTop;
+      lastAnchorScrollTopR = rightPane.scrollTop;
+
+      // ロックを解除して、ここからの手動スクロール連動を解禁
+      isJumpProcessingM = false;
+
+      // イベントリスナーが何度も重複して登録されないよう、使い終わったらその場で綺麗に消去（クレンジング）
+      leftPane.removeEventListener('scrollend', onScrollEndM);
+    };
+
+    // スクロール完了イベントを左ペインに登録して待機させます
+    leftPane.addEventListener('scrollend', onScrollEndM);
+
+    // EditBoxの数値を現在の番号（1基点）に同期
+    document.getElementById('mergeIdxInput').value = currentConflictIndex + 1;
+
+    // 下段の最終マージ結果エディタ（#PM）も同時に自動追従スクロール
+    if (document.getElementById('syncResultScroll').checked) {
+      scrollResultToBlock(parseInt(currentBlockId));
+    }
+  }
+}
+
+function scrollResultToBlock(blockId) {
+  const editor = document.getElementById('PM');
+  const text = editor.value;
+  const lines = text.split('\n');
+
+  let targetLineIndex = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].startsWith('<<<<<<< HEAD') && lines[i].includes("(未解決の衝突 #" + blockId + ")")) {
+      targetLineIndex = i;
+      break;
+    }
+  }
+  if (targetLineIndex === -1) {
+    let accumulatedLines = 0;
+    for (let i = 0; i < mergedBlocks.length; i++) {
+      const block = mergedBlocks[i];
+      if (block.type === 'conflict' && block.id === blockId) {
+        targetLineIndex = accumulatedLines;
+        break;
+      }
+      if (block.type === 'common') accumulatedLines += block.lines.length;
+      else if (block.type === 'conflict') {
+        if (block.selected === 'unresolved') accumulatedLines += 3 + block.head.length + block.incoming.length;
+        else if (block.selected === 'head') accumulatedLines += block.head.length;
+        else if (block.selected === 'incoming') accumulatedLines += block.incoming.length;
+        else if (block.selected === 'both') accumulatedLines += block.head.length + block.incoming.length;
+      }
+    }
+  }
+  if (targetLineIndex !== -1) {
+    const lineHeight = 19.5; 
+    const targetScrollTop = (targetLineIndex * lineHeight) - (editor.clientHeight / 2) + 20;
+    editor.scrollTo({ top: Math.max(0, targetScrollTop), behavior: 'smooth' });
+  }
+}
+
+/* ==========================================================================
+   タブ3: 1行JSON高度マージ・大展開スクリプト (改行不具合・クォート消失を完全修正)
+   ========================================================================== */
+let mergedBlocks = []; let currentConflictIndex = -1; let conflictHeaderElements = []; let mergeProtectedMarkers = [];
 
 function mergeProt(s) {
-  mergeProtectedMarkers = []; let inStr = false, i = 0, res = "", t = s.trim();
+  mergeProtectedMarkers = []; let inStr = false, i = 0, res = "", t = s;
   while (i < t.length) {
     let c = t[i], n1 = t[i+1], n2 = t[i+2], n3 = t[i+3];
     if (inStr && c === '\\') {
@@ -500,60 +747,107 @@ function mergeProt(s) {
   }
   return res;
 }
+function mergeRest(s) { let out = s; for (let i = mergeProtectedMarkers.length - 1; i >= 0; i--) out = out.replaceAll(mergeProtectedMarkers[i].id, mergeProtectedMarkers[i].v); return out; }
 
-function mergeRest(s) { 
-  let out = s; 
-  for (let i = mergeProtectedMarkers.length - 1; i >= 0; i--) {
-    out = out.replaceAll(mergeProtectedMarkers[i].id, mergeProtectedMarkers[i].v); 
-  } 
-  return out; 
-}
-
+// --- クォートが千切れた不正なJS構文からでも、JSONを自動抽出して大展開する関数 ---
 function expandLineWithJSON(line) {
-  const match = line.match(/JSON\.parse\((['"`])([\s\S]*?)\1\)/); 
-  if (!match) return [line];
+  const trimmed = line.trim(); if (!trimmed) return [line];
+  const hasJsonParse = line.includes("JSON.parse(");
 
-  const fullMatch = match[0];
-  const quoteType = match[1]; // 使われているクォート種類（' や " など）を厳密に記憶
-  let jsonStr = match[2];
+  if (hasJsonParse) {
+    // 1. まずは正規表現で、クォートのペアが美しく揃っているかチェック
+    let match = line.match(/JSON\.parse\((['"`])([\s\S]*?)\1\)/);
+    let quoteType = match ? match[1] : "'";
+    let jsonStr = match ? match[2] : "";
+    let fullMatch = match ? match[0] : "";
 
-  const protectedJson = mergeProt(jsonStr);
-  try {
-    let parsedObj;
-    try { 
-      parsedObj = JSON.parse(protectedJson); 
-    } catch(e) { 
-      let c = protectedJson.endsWith(',') ? protectedJson.slice(0, -1) : protectedJson;
-      parsedObj = JSON.parse("[" + c + "]"); 
+    // 2. 【フォールバック】クォートが片方消えている場合のレスキュー処理
+    if (!match) {
+      const startIdx = line.indexOf("JSON.parse(");
+      const contentStart = startIdx + "JSON.parse(".length;
+      let bracketContent = line.substring(contentStart);
+
+      // カッコの中にある最初と最後のブラケット（{ や [）の範囲を力技で特定
+      const jsonStartIdx = bracketContent.search(/[\{\[]/);
+      const jsonEndIdx = bracketContent.lastIndexOf("}");
+      const jsonEndIdx2 = bracketContent.lastIndexOf("]");
+      const finalEndIdx = Math.max(jsonEndIdx, jsonEndIdx2);
+
+      if (jsonStartIdx !== -1 && finalEndIdx !== -1 && finalEndIdx > jsonStartIdx) {
+        // 壊れた構文の隙間から、純粋なJSONテキスト部分だけを強引に抽出！
+        jsonStr = bracketContent.substring(jsonStartIdx, finalEndIdx + 1);
+        // 置換対象となる不完全な「JSON.parse(...)」全体の文字列を定義
+        fullMatch = line.substring(startIdx, line.lastIndexOf(")") + 1);
+        quoteType = "'"; // 消失したクォートをシングルクォートで自動補完
+      } else {
+        return [line]; // どうしてもJSONの形をしていなければ諦めてそのまま返す
+      }
     }
 
-    const prettyJSONLines = JSON.stringify(parsedObj, null, 2).split('\n');
-    const prefix = line.substring(0, line.indexOf(fullMatch));
-    const suffix = line.substring(line.indexOf(fullMatch) + fullMatch.length);
+    // 3. 抽出したJSONをQMK文字保護ロジックを通して縦に大展開（以降は共通の最強処理）
+    const protectedJson = mergeProt(jsonStr);
+    try {
+      let parsedObj;
+      try { parsedObj = JSON.parse(protectedJson); } 
+      catch(e) { parsedObj = JSON.parse("[" + (protectedJson.endsWith(',') ? protectedJson.slice(0, -1) : protectedJson) + "]"); }
 
-    let result = [];
-    // 1. 開始部分に正しくクォートを配置
-    result.push(prefix + "JSON.parse(" + quoteType);
+      const prettyJSONLines = JSON.stringify(parsedObj, null, 2).split('\n');
+      const prefix = line.substring(0, line.indexOf(fullMatch));
+      const suffix = line.substring(line.indexOf(fullMatch) + fullMatch.length);
 
-    // 2. JSONの中身を展開
-    prettyJSONLines.forEach(jLine => result.push("  " + mergeRest(jLine))); 
-
-    // 3. 閉じ行部分に、消滅していた「閉じクォート（quoteType）」を確実にハメ戻してから、残りのコード（suffix）を結合
-    result.push(quoteType + ")" + suffix); 
-
-    return result;
-  } catch (e) { 
-    return [line]; 
+      let result = [];
+      // 壊れていた開始クォートもここで美しい「'」の形に完全補完されて生成されます
+      result.push(prefix + "JSON.parse(" + quoteType + " /* --- 埋め込みJSONを展開表示 --- */");
+      prettyJSONLines.forEach(jLine => result.push("  " + mergeRest(jLine)));
+      result.push(quoteType + ")" + suffix); 
+      return result;
+    } catch (e) { return [line]; }
+  } else {
+    // 【ケースB】素のJSON（変更なし）
+    if (!trimmed.startsWith('{') && !trimmed.startsWith('[') && !trimmed.endsWith('}') && !trimmed.endsWith(']')) return [line];
+    let cleanTarget = trimmed; let hasTrailingComma = cleanTarget.endsWith(','); if (hasTrailingComma) cleanTarget = cleanTarget.slice(0, -1);
+    const protectedJson = mergeProt(cleanTarget);
+    try {
+      let parsedObj;
+      try { parsedObj = JSON.parse(protectedJson); } catch(e) { parsedObj = JSON.parse("[" + (protectedJson.endsWith(',') ? protectedJson.slice(0, -1) : protectedJson) + "]"); }
+      const prettyJSONLines = JSON.stringify(parsedObj, null, 2).split('\n');
+      const leadingSpaces = line.substring(0, line.indexOf(trimmed));
+      let result = [];
+      prettyJSONLines.forEach((jLine, idx) => { const suffixComma = (idx === prettyJSONLines.length - 1 && hasTrailingComma) ? "," : ""; result.push(leadingSpaces + mergeRest(jLine) + suffixComma); });
+      return result;
+    } catch (e) { return [line]; }
   }
 }
 
 function syncScrollMerge(fromId, toId) {
   if (!document.getElementById('syncScrollCompare').checked) return;
   if (isSyncing) return;
+
+  if (isJumpProcessingM) return;
+
+  if (lastAnchorScrollTopL === 0 && lastAnchorScrollTopR === 0) {
+    isSyncing = true;
+    document.getElementById(toId).scrollTop = document.getElementById(fromId).scrollTop;
+    document.getElementById(toId).scrollLeft = document.getElementById(fromId).scrollLeft;
+    setTimeout(() => isSyncing = false, 50);
+    return;
+  }
+
   isSyncing = true;
-  document.getElementById(toId).scrollTop = document.getElementById(fromId).scrollTop;
-  document.getElementById(toId).scrollLeft = document.getElementById(fromId).scrollLeft;
-  setTimeout(() => isSyncing = false, 50);
+  const fromEl = document.getElementById(fromId);
+  const toEl = document.getElementById(toId);
+
+  if (fromId === 'LM') {
+    const deltaY = fromEl.scrollTop - lastAnchorScrollTopL;
+    toEl.scrollTop = Math.max(0, lastAnchorScrollTopR + deltaY);
+  } else {
+    const deltaY = fromEl.scrollTop - lastAnchorScrollTopR;
+    toEl.scrollTop = Math.max(0, lastAnchorScrollTopL + deltaY);
+  }
+
+  toEl.scrollLeft = fromEl.scrollLeft;
+
+  setTimeout(() => isSyncing = false, 20);
 }
 
 function updateMergeGutter() {
@@ -561,21 +855,18 @@ function updateMergeGutter() {
   let txt = ''; for (let i = 1; i <= lines; i++) txt += i + '\n'; g.textContent = txt; syncMergeGutter();
 }
 
-function syncMergeGutter() { 
-  document.getElementById('M-gutter').scrollTop = document.getElementById('PM').scrollTop; 
-}
+function syncMergeGutter() { document.getElementById('M-gutter').scrollTop = document.getElementById('PM').scrollTop; }
 
 function parseExpandAndBuild() {
   const src = document.getElementById('conflictMergeInput').value, L = document.getElementById('LM'), R = document.getElementById('RM');
   L.innerHTML = R.innerHTML = ''; mergedBlocks = []; if (!src.trim()) return;
-
+  let cleanSrc = src.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   let lRawLines = [], rRawLines = [], mode = 'common';
-  src.split('\n').forEach(l => {
+  cleanSrc.split('\n').forEach(l => {
     if (l.startsWith('<<<<<<<')) mode = 'left'; else if (l.startsWith('=======')) mode = 'right'; else if (l.startsWith('>>>>>>>')) mode = 'common';
     else { if (mode === 'common') { lRawLines.push(l); rRawLines.push(l); } else if (mode === 'left') lRawLines.push(l); else if (mode === 'right') rRawLines.push(l); }
   });
   if (mode !== 'common' || lRawLines.length === 0) { alert('⚠️ 正しいコンフリクトマーカーが見つかりません。'); return; }
-
   let lLines = [], rLines = [];
   lRawLines.forEach(line => { expandLineWithJSON(line).forEach(el => { if (el.trim() || el === "") lLines.push(el); }); });
   rRawLines.forEach(line => { expandLineWithJSON(line).forEach(el => { if (el.trim() || el === "") rLines.push(el); }); });
@@ -596,89 +887,69 @@ function parseExpandAndBuild() {
 
   let lLineNum = 1, rLineNum = 1;
   mergedBlocks.forEach(block => {
-    if (block.type === 'common') {
-      block.lines.forEach(line => { addOutputLine(L, lLineNum++, line, ''); addOutputLine(R, rLineNum++, line, ''); });
-    } else if (block.type === 'conflict') {
+    if (block.type === 'common') { block.lines.forEach(line => { addOutputLine(L, lLineNum++, line, ''); addOutputLine(R, rLineNum++, line, ''); }); }
+    else if (block.type === 'conflict') {
       addConflictHeader(L, "【衝突 #" + block.id + "】現在の変更 / HEAD", 'head', block.id);
       if (block.head.length === 0) addOutputLine(L, '', '（この区画のコードなし）', 'empty'); else block.head.forEach(line => addOutputLine(L, lLineNum++, line, 'removed'));
       addConflictHeader(R, "【衝突 #" + block.id + "】取り込みたい変更 / Incoming", 'incoming', block.id);
       if (block.incoming.length === 0) addOutputLine(R, '', '（この区画のコードなし）', 'empty'); else block.incoming.forEach(line => addOutputLine(R, rLineNum++, line, 'added'));
     }
   });
-
-  rebuildResultText();
-  document.getElementById('workspace').style.display = 'flex';
-  currentConflictIndex = -1;
+  rebuildResultText(); document.getElementById('workspace').style.display = 'flex'; currentConflictIndex = -1;
   conflictHeaderElements = Array.from(L.querySelectorAll('.conflict-block-head'));
-  
   const navEl = document.getElementById('conflictNav'), labelEl = document.getElementById('conflictCountLabel');
-  if (conflictHeaderElements.length > 0) { 
-    navEl.style.display = 'inline-flex'; 
-    labelEl.innerText = "0 / " + conflictHeaderElements.length; 
-  } else { 
-    navEl.style.display = 'none'; 
+  if (conflictHeaderElements.length > 0) { navEl.style.display = 'inline-flex'; labelEl.innerText = "0 / " + conflictHeaderElements.length; } else { navEl.style.display = 'none'; }
+
+  initMergeJumpUI();
+
+  const controlsEl = document.getElementById('conflictMergeInput').nextElementSibling;
+  if (controlsEl && controlsEl.classList.contains('controls')) {
+    controlsEl.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start'
+    });
   }
 }
 
-function jumpConflict(direction) {
-  if (conflictHeaderElements.length === 0) return;
-  currentConflictIndex += direction;
-  if (currentConflictIndex < 0) currentConflictIndex = conflictHeaderElements.length - 1;
-  else if (currentConflictIndex >= conflictHeaderElements.length) currentConflictIndex = 0;
-  const targetElement = conflictHeaderElements[currentConflictIndex];
-  if (targetElement) {
-    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    const rightPaneHeaders = Array.from(document.getElementById('RM').querySelectorAll('.conflict-block-head'));
-    if (rightPaneHeaders[currentConflictIndex]) rightPaneHeaders[currentConflictIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-    document.getElementById('conflictCountLabel').innerText = (currentConflictIndex + 1) + " / " + conflictHeaderElements.length;
-    if (document.getElementById('syncResultScroll').checked) scrollResultToBlock(currentConflictIndex + 1);
-  }
+function addOutputLine(parent, num, text, className) {
+  const row = document.createElement('div'); row.className = "line " + className;
+  const numDiv = document.createElement('div'); numDiv.className = 'line-num'; numDiv.innerText = num;
+  const contentDiv = document.createElement('div'); contentDiv.className = 'line-content'; contentDiv.innerText = text;
+  row.appendChild(numDiv); row.appendChild(contentDiv); parent.appendChild(row);
 }
 
-function scrollResultToBlock(blockId) {
-  const editor = document.getElementById('PM'), text = editor.value, lines = text.split('\n');
-  let targetLineIndex = -1;
-  for (let i = 0; i < lines.length; i++) {
-    if (lines[i].startsWith('<<<<<<< HEAD') && lines[i].includes("(未解決の衝突 #" + blockId + ")")) { targetLineIndex = i; break; }
+function addConflictHeader(parent, title, side, blockId) {
+  const header = document.createElement('div'); 
+  header.className = 'line conflict-block-head';
+
+  header.id = (side === 'head') ? "head-header-" + blockId : "incoming-header-" + blockId;
+
+  const numDiv = document.createElement('div'); numDiv.className = 'line-num'; numDiv.innerText = '⚡';
+  const contentDiv = document.createElement('div'); contentDiv.className = 'line-content'; contentDiv.style.fontWeight = 'bold';
+  contentDiv.style.whiteSpace = 'normal'; contentDiv.style.wordBreak = 'break-word'; contentDiv.style.padding = '4px 0';
+  const textSpan = document.createElement('span'); textSpan.innerText = title + ' '; contentDiv.appendChild(textSpan);
+  const btnContainer = document.createElement('div'); btnContainer.style.display = 'inline-flex'; btnContainer.style.flexWrap = 'wrap'; btnContainer.style.gap = '4px'; btnContainer.style.marginTop = '4px'; btnContainer.style.verticalAlign = 'middle';
+  if (side === 'head') {
+    const btn = document.createElement('button'); btn.id = "btn-head-" + blockId; btn.className = 'btn-action head'; btn.innerText = 'HEADを採用'; btn.onclick = function() { selectBlockChoice(blockId, 'head'); }; btnContainer.appendChild(btn);
+  } else {
+    const btn = document.createElement('button'); btn.id = "btn-inc-" + blockId; btn.className = 'btn-action incoming'; btn.innerText = 'Incomingを採用'; btn.onclick = function() { selectBlockChoice(blockId, 'incoming'); }; btnContainer.appendChild(btn);
   }
-  if (targetLineIndex === -1) {
-    let accumulatedLines = 0;
-    for (let i = 0; i < mergedBlocks.length; i++) {
-      const block = mergedBlocks[i];
-      if (block.type === 'conflict' && block.id === blockId) { targetLineIndex = accumulatedLines; break; }
-      if (block.type === 'common') accumulatedLines += block.lines.length;
-      else if (block.type === 'conflict') {
-        if (block.selected === 'unresolved') accumulatedLines += 3 + block.head.length + block.incoming.length;
-        else if (block.selected === 'head') accumulatedLines += block.head.length;
-        else if (block.selected === 'incoming') accumulatedLines += block.incoming.length;
-        else if (block.selected === 'both') accumulatedLines += block.head.length + block.incoming.length;
-      }
-    }
-  }
-  if (targetLineIndex !== -1) {
-    const lineHeight = 19.5, targetScrollTop = (targetLineIndex * lineHeight) - (editor.clientHeight / 2) + 20;
-    editor.scrollTop = Math.max(0, targetScrollTop);
-  }
+  const btnBoth = document.createElement('button'); btnBoth.id = "btn-both-" + blockId; btnBoth.className = 'btn-action'; btnBoth.innerText = '両方を残す'; btnBoth.onclick = function() { selectBlockChoice(blockId, 'both'); }; btnContainer.appendChild(btnBoth);
+  contentDiv.appendChild(btnContainer); header.appendChild(numDiv); header.appendChild(contentDiv); parent.appendChild(header);
 }
 
 function selectBlockChoice(blockId, choice) {
-  const block = mergedBlocks.find(b => b.id === blockId); if (!block) return;
-  if (block.selected === choice) return;
-  const editor = document.getElementById('PM'), currentText = editor.value;
-  let searchStr = "";
+  const block = mergedBlocks.find(b => b.id === blockId); if (!block) return; if (block.selected === choice) return;
+  const editor = document.getElementById('PM'), currentText = editor.value; let searchStr = "";
   if (block.selected === 'unresolved') {
     const startMarker = "<<<<<<< HEAD (未解決の衝突 #" + blockId + ")", endMarker = ">>>>>>> Incoming (未解決の衝突 #" + blockId + ")";
     const startIdx = currentText.indexOf(startMarker), endIdx = currentText.indexOf(endMarker);
     if (startIdx !== -1 && endIdx !== -1) searchStr = currentText.substring(startIdx, endIdx + endMarker.length);
   } else {
-    let previousLines = [];
-    if (block.selected === 'head') previousLines = block.head; else if (block.selected === 'incoming') previousLines = block.incoming; else if (block.selected === 'both') previousLines = block.head.concat(block.incoming);
+    let previousLines = []; if (block.selected === 'head') previousLines = block.head; else if (block.selected === 'incoming') previousLines = block.incoming; else if (block.selected === 'both') previousLines = block.head.concat(block.incoming);
     searchStr = previousLines.join('\n');
   }
-
-  let replaceStr = "";
-  if (choice === 'head') replaceStr = block.head.join('\n'); else if (choice === 'incoming') replaceStr = block.incoming.join('\n'); else if (choice === 'both') replaceStr = block.head.concat(block.incoming).join('\n');
-
+  let replaceStr = ""; if (choice === 'head') replaceStr = block.head.join('\n'); else if (choice === 'incoming') replaceStr = block.incoming.join('\n'); else if (choice === 'both') replaceStr = block.head.concat(block.incoming).join('\n');
   if (searchStr && currentText.includes(searchStr)) {
     editor.value = currentText.replace(searchStr, replaceStr); block.selected = choice;
     const btnH = document.getElementById("btn-head-" + blockId), btnI = document.getElementById("btn-inc-" + blockId), allBothBtns = document.querySelectorAll('[id="btn-both-' + blockId + '"]');
@@ -688,9 +959,7 @@ function selectBlockChoice(blockId, choice) {
     else if (choice === 'incoming' && btnI) { btnI.className = 'btn-action active-incoming'; btnI.innerText = '選択中: Incoming'; }
     else if (choice === 'both') { allBothBtns.forEach(btn => { btn.className = 'btn-action active-both'; btn.innerText = '選択中: 両方を残す'; }); }
     updateMergeGutter(); if (document.getElementById('syncResultScroll').checked) scrollResultToBlock(blockId);
-  } else {
-    block.selected = choice; alert("⚠️ 衝突 #" + blockId + " のエリアが手動編集により変更されているため置換が制限されました。直接編集してください。");
-  }
+  } else { block.selected = choice; alert("⚠️ 衝突 #" + blockId + " のエリアが手動編集により変更されているため置換が制限されました。直接編集してください。"); }
 }
 
 function rebuildResultText() {
@@ -706,7 +975,7 @@ function rebuildResultText() {
 
 let minifyProtectedMarkers = [];
 function miniProt(s) {
-  minifyProtectedMarkers = []; let inStr = false, i = 0, res = "", t = s.trim();
+  minifyProtectedMarkers = []; let inStr = false, i = 0, res = "", t = s;
   while (i < t.length) {
     let c = t[i], n1 = t[i+1], n2 = t[i+2], n3 = t[i+3];
     if (inStr && c === '\\') {
@@ -727,281 +996,194 @@ function miniProt(s) {
 }
 function miniRest(s) { let out = s; for (let i = minifyProtectedMarkers.length - 1; i >= 0; i--) out = out.replaceAll(minifyProtectedMarkers[i].id, minifyProtectedMarkers[i].v); return out; }
 
-// --- 最終決定版：手動編集されても絶対にズレない、埋め込みJSONピンポイント1行圧縮ロジック ---
-function minifyResult() {
-  const editor = document.getElementById('PM');
-  const minifiedOut = document.getElementById('minifiedOut');
-  const wrapper = document.getElementById('minifiedResultWrapper');
-  let text = editor.value.trim();
-  
-  if (!text) return;
+// --- 万が一の構文エラー時でも文字列を絶対に破壊しない、100%安全な圧縮ヘルパー関数 ---
+function compressPureJSON(rawJson) {
+  // 1. 前後の余計な空白や改行コード（\r\n）を完全にトリム
+  let cleanedJSON = rawJson.trim().replace(/[\r\n]/g, '');
 
-  if (text.includes('<<<<<<< HEAD')) {
-    if (!confirm('⚠️ まだ未解決のコンフリクトマーカーが残っています。このまま1行に圧縮しますか？')) return;
+  let comma = cleanedJSON.endsWith(','); 
+  if (comma) cleanedJSON = cleanedJSON.slice(0, -1);
+
+  // QMK特有の配列末尾カンマを安全にカット
+  cleanedJSON = cleanedJSON.replace(/,\s*\]\s*$/, ']').replace(/,\s*\}\s*$/, '}');
+
+  // 特殊文字を一時退避
+  const protectedT = miniProt(cleanedJSON);
+  try {
+    let parsed; 
+    try { 
+      parsed = JSON.parse(protectedT); 
+    } catch(e) { 
+      let c = protectedT.trim(); 
+      if (c.endsWith(',')) c = c.slice(0, -1); 
+      parsed = JSON.parse(c.startsWith('[') ? c : "[" + c + "]"); 
+    }
+
+    let out = (Array.isArray(parsed) && protectedT.includes('],')) 
+      ? parsed.map(o => JSON.stringify(o)).join(',') + (comma ? ',' : '') 
+      : JSON.stringify(parsed);
+
+    return miniRest(out);
+  } catch(err) { 
+    // 行頭や行末にある余計なインデント（字下げスペース）だけを除去し、値の中のスペースは100%無傷で保持して安全に連結します。
+    let safeFallbackLines = protectedT.split('\n').map(l => {
+      // 文字列の外部にありがちな先頭と末尾の空白だけをトリム
+      return l.trim();
+    });
+    return miniRest(safeFallbackLines.join('') + (comma ? ',' : '')); 
+  }
+}
+
+// --- QMK特有のエスケープとダブルクォートの連続を完全退避してスペースを確実に注入する関数 ---
+function injectSpacesToJSON(text) {
+  if (!text) return text;
+
+  let finalOutput = text;
+
+  // 【最強の特別扱い・退避ロジック】
+  // 文字列走査を狂わせる原因となる、ダブルクォーテーションが連続する難解なQMKパターンを、
+  // スペース処理を施す一番最初のタイミングで一意のトークンへ完全に退避（非表示に）させます。
+  // FIXME: The pattern '\\\\\\"' is not fixed yet...
+  let patIndex = 0;
+  const qmkPatterns = [
+    { raw: '\\\\\\\\",', token: '___QMK_PAT_' + patIndex++ + '___",'},
+    { raw: '\\\\\\\\":', token: '___QMK_PAT_' + patIndex++ + '___":'},
+    { raw: '\\\\\\\\"',  token: '___QMK_PAT_' + patIndex++ + '___"'},
+    { raw: '\\\\",',     token: '___QMK_PAT_' + patIndex++ + '___",'},
+    { raw: '\\\\":',     token: '___QMK_PAT_' + patIndex++ + '___":'},
+    { raw: '\\\\"',      token: '___QMK_PAT_' + patIndex++ + '___'}
+  ];
+
+  // 1. 【一括退避】for文でループさせて、対象パターンを一時的に別名トークンへ隠蔽
+  for (let i = 0; i < qmkPatterns.length; i++) {
+    if (finalOutput.includes(qmkPatterns[i].raw)) {
+      finalOutput = finalOutput.replaceAll(qmkPatterns[i].raw, qmkPatterns[i].token);
+    }
   }
 
-  // 1. テキスト全体を行ごとに分解
-  const lines = editor.value.split('\n');
-  let processedLines = [];
-  
-  let inJSON = false;
-  let jsonBuffer = "";
-  let currentPrefix = "";
-  let currentQuote = "";
+  // 2. 文字列の外側（JSONの構文エリア）だけに安全にスペースを注入するステートマシン
+  let text_len = finalOutput.length;
+  let inStr = false;
+  let quoteChar = "";
+  let escaped = false;
+  let res = "";
+  let i = 0;
 
-  // 2. 1行ずつ上から順番に完全にチェックしていく
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    if (!inJSON) {
-      // JSON.parse( の開始行を探す (前後にどんな文字があっても検知)
-      const startIdx = line.indexOf("JSON.parse(");
-      if (startIdx !== -1) {
-        // カッコの次の1文字（クォート：' や " や `）を取得
-        const quoteIdx = startIdx + "JSON.parse(".length;
-        if (quoteIdx < line.length) {
-          inJSON = true;
-          currentQuote = line[quoteIdx]; // クォートを記憶 ('等)
-          
-          // JSON.parse(' までのJavaScriptコードを退避
-          currentPrefix = line.substring(0, quoteIdx + 1);
-          
-          // 同じ行のクォート以降の文字列をバッファに入れる
-          jsonBuffer = line.substring(quoteIdx + 1);
-          continue;
-        }
-      }
-      // 通常のJavaScript行はそのまま保持
-      processedLines.push(line);
-    } else {
-      // JSONブロックの内部にいる場合、閉じカッコを探す
-      // 厳密に 「 記憶したクォート + ) 」 で終わっている位置を探す
-      const endMarker = currentQuote + ")";
-      const endIdx = line.indexOf(endMarker);
-
-      if (endIdx !== -1) {
-        // 閉じカッコの手前までの文字列をバッファに合流
-        jsonBuffer += "\n" + line.substring(0, endIdx);
-        // 閉じカッコ以降のJavaScriptコード（例: ; や } など）を取得
-        const currentSuffix = line.substring(endIdx);
-
-        // 溜まった複数行のJSON内の改行やインデントスペースを完全に削ぎ落として「1行」に圧縮
-        let cleanedJSON = jsonBuffer.trim();
-        let comma = cleanedJSON.endsWith(',');
-        if (comma) cleanedJSON = cleanedJSON.slice(0, -1);
-
-        // QMK文字（バックスラッシュ等）を一時退避して安全に圧縮
-        const protectedT = miniProt(cleanedJSON);
-        let minifiedJSONStr = "";
-        try {
-          let parsed;
-          try { parsed = JSON.parse(protectedT); } catch(e) { let c = protectedT.endsWith(',') ? protectedT.slice(0, -1) : protectedT; parsed = JSON.parse("[" + c + "]"); }
-          minifiedJSONStr = (Array.isArray(parsed) && cleanedJSON.includes('},\n')) ? parsed.map(o => JSON.stringify(o)).join(',') + (comma ? ',' : '') : JSON.stringify(parsed);
-          minifiedJSONStr = miniRest(minifiedJSONStr);
-        } catch(err) {
-          // JSONとしてのパースに失敗した場合は、文字列としての改行とインデントを詰める
-          minifiedJSONStr = miniRest(protectedT.split('\n').map(l => l.replace(/^\s+/, '')).join(''));
-        }
-
-        // JavaScriptコードのインデントを完璧に維持したまま、1行化JSONをドッキング
-        processedLines.push(currentPrefix + minifiedJSONStr + currentSuffix);
-        inJSON = false;
-        jsonBuffer = "";
+  while (i < text_len) {
+    let c = finalOutput[i];
+    if (inStr) {
+      if (escaped) {
+        res += c;
+        escaped = false;
+      } else if (c === '\\') {
+        res += c;
+        escaped = true;
+      } else if (c === quoteChar) {
+        res += c;
+        inStr = false;
       } else {
-        // 閉じカッコが見つかるまでは、JSONの行としてバッファに溜める
-        jsonBuffer += "\n" + line;
+        res += c;
+      }
+      i++;
+    } else {
+      if (c === '"' || c === "'") {
+        inStr = true;
+        quoteChar = c;
+        escaped = false;
+        res += c;
+        i++;
+      } else if (c === ':') {
+        res += ": ";
+        i++;
+        while (i < text_len && finalOutput[i] === ' ') i++; // 重複ガード
+      } else if (c === ',') {
+        res += ", ";
+        i++;
+        while (i < text_len && finalOutput[i] === ' ') i++; // 重複ガード
+      } else {
+        res += c;
+        i++;
       }
     }
   }
 
-  // 万が一、閉じカッコが見つからずに終わった場合はフォールバック
-  if (inJSON && jsonBuffer) {
-    processedLines.push(currentPrefix + jsonBuffer);
+  // 3. 【一括復元】すべてのスペース注入完了後、退避させていたトークンを逆順で元の正しい形状にドッキング
+  for (let i = qmkPatterns.length - 1; i >= 0; i--) {
+    res = res.replaceAll(qmkPatterns[i].token, qmkPatterns[i].raw);
   }
 
-  // 3. 完成したテキストを新しいEditBoxに出力
-  minifiedOut.value = processedLines.join('\n');
-  wrapper.style.display = 'block';
-  minifiedOut.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  alert('🎉 JavaScript構文を100%維持したまま、埋め込みJSON部分だけをピンポイントで1行に圧縮しました！');
+  return res;
 }
 
-function addOutputLine(parent, num, text, className) {
-  const row = document.createElement('div'); 
-  row.className = "line " + className;
+// --- 展開時のコメントやインデントのゴミを100%排除して美しく1行化する圧縮関数 ---
+function minifyResult() {
+  const editor = document.getElementById('PM'), minifiedOut = document.getElementById('minifiedOut'), wrapper = document.getElementById('minifiedResultWrapper');
+  let text = editor.value.trim(); if (!text) return;
+  if (text.includes('<<<<<<< HEAD')) { if (!confirm('⚠️ まだ未解決のコンフリクトマーカーが残っています。このまま1行に圧縮しますか？')) return; }
 
-  const numDiv = document.createElement('div'); 
-  numDiv.className = 'line-num'; 
-  numDiv.innerText = num;
+  const isJavaScriptFormat = text.includes("JSON.parse(");
+  let finalOutputText = "";
 
-  const contentDiv = document.createElement('div'); 
-  contentDiv.className = 'line-content'; 
-  contentDiv.innerText = text;
+  if (isJavaScriptFormat) {
+    const lines = text.split('\n'); let processedLines = [];
+    let inJSON = false, jsonBuffer = "", currentPrefix = "", currentQuote = "";
 
-  row.appendChild(numDiv); 
-  row.appendChild(contentDiv); 
-  parent.appendChild(row);
-}
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (!inJSON) {
+        const startIdx = line.indexOf("JSON.parse(");
+        if (startIdx !== -1) {
+          const quoteIdx = startIdx + "JSON.parse(".length;
+          if (quoteIdx < line.length) {
+            inJSON = true;
+            currentQuote = line[quoteIdx];
+            currentPrefix = line.substring(0, quoteIdx + 1);
+            jsonBuffer = ""; // 開始行の残骸は溜めずにクリア
+            continue;
+          }
+        }
+        processedLines.push(line);
+      } else {
+        const endMarker = currentQuote + ")"; const endIdx = line.indexOf(endMarker);
+        if (endIdx !== -1) {
+          // 閉じ行の手前までの文字列をインデントを除去してバッファに合流
+          let lastChunk = line.substring(0, endIdx).trim();
+          if (lastChunk && !lastChunk.includes("/* --- 埋め込みJSONを展開表示 --- */")) {
+            jsonBuffer += lastChunk;
+          }
+          const currentSuffix = line.substring(endIdx);
+          processedLines.push(currentPrefix + compressPureJSON(jsonBuffer) + currentSuffix); 
+          inJSON = false;
+          jsonBuffer = "";
+        } else { 
+          // 展開用のコメント行は1行化の邪魔になるため完全に無視（スキップ）
+          if (line.includes("/* --- 埋め込みJSONを展開表示 --- */")) continue;
 
-function addConflictHeader(parent, title, side, blockId) {
-  const header = document.createElement('div');
-  header.className = 'line conflict-block-head';
-
-  const numDiv = document.createElement('div');
-  numDiv.className = 'line-num';
-  numDiv.innerText = '⚡';
-
-  const contentDiv = document.createElement('div');
-  contentDiv.className = 'line-content';
-  contentDiv.style.fontWeight = 'bold';
-
-  // 親要素の1行固定制約を上書きし、ボタンエリアを2行目に美しく折り返します
-  contentDiv.style.whiteSpace = 'normal';
-  contentDiv.style.wordBreak = 'break-word';
-  contentDiv.style.padding = '4px 0';
-
-  // テキスト部分を独立した塊にする
-  const textSpan = document.createElement('span');
-  textSpan.innerText = title + ' ';
-  contentDiv.appendChild(textSpan);
-
-  // ボタンたちをまとめる専用の横並びコンテナ（横幅が足りなければ自動折り返し）
-  const btnContainer = document.createElement('div');
-  btnContainer.style.display = 'inline-flex';
-  btnContainer.style.flexWrap = 'wrap';
-  btnContainer.style.gap = '4px';
-  btnContainer.style.marginTop = '4px';
-  btnContainer.style.verticalAlign = 'middle';
-
-  if (side === 'head') {
-    const btn = document.createElement('button');
-    btn.id = "btn-head-" + blockId;
-    btn.className = 'btn-action head';
-    btn.innerText = 'HEADを採用';
-    btn.onclick = function() { selectBlockChoice(blockId, 'head'); };
-    btnContainer.appendChild(btn);
+          // 各行の頭と後ろにある余計なインデントスペースを完全に削ぎ落として（trim）からバッファに結合
+          let cleanedLine = line.trim();
+          if (cleanedLine) {
+            jsonBuffer += cleanedLine; 
+          }
+        }
+      }
+    }
+    if (inJSON && jsonBuffer) { processedLines.push(currentPrefix + compressPureJSON(jsonBuffer) + currentQuote + ")"); }
+    finalOutputText = processedLines.join('\n');
   } else {
-    const btn = document.createElement('button');
-    btn.id = "btn-inc-" + blockId;
-    btn.className = 'btn-action incoming';
-    btn.innerText = 'Incomingを採用';
-    btn.onclick = function() { selectBlockChoice(blockId, 'incoming'); };
-    btnContainer.appendChild(btn);
+    finalOutputText = compressPureJSON(text);
   }
 
-  const btnBoth = document.createElement('button');
-  btnBoth.id = "btn-both-" + blockId;
-  btnBoth.className = 'btn-action';
-  btnBoth.innerText = '両方を残す';
-  btnBoth.onclick = function() { selectBlockChoice(blockId, 'both'); };
-  btnContainer.appendChild(btnBoth);
+  if (document.getElementById('addSpaceAfterSeparator').checked) {
+    finalOutputText = injectSpacesToJSON(finalOutputText);
+  }
 
-  // コンテナをメイン部分に合流させる
-  contentDiv.appendChild(btnContainer);
+  minifiedOut.value = finalOutputText; 
+  wrapper.style.display = 'block';
 
-  header.appendChild(numDiv);
-  header.appendChild(contentDiv);
-  parent.appendChild(header);
-}
-
-// ---【修正版】差分再計算（タブ1）用のジャンプ制御関数 ---
-let currentDiffIndexD = -1;
-let diffElementsD = [];
-
-// ---【スムーズスクロール版】差分再計算（タブ1）用のブロックジャンプ制御関数 ---
-function jumpDiffBlock(direction) {
-  if (diffElementsD.length === 0) return;
-
-  // 以前ハイライトしていた古い表示をクリア
-  document.querySelectorAll('.focused-diff-line').forEach(el => {
-    el.classList.remove('focused-diff-line');
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth'
   });
-
-  currentDiffIndexD += direction;
-  if (currentDiffIndexD < 0) currentDiffIndexD = diffElementsD.length - 1;
-  else if (currentDiffIndexD >= diffElementsD.length) currentDiffIndexD = 0;
-
-  const targetElement = diffElementsD[currentDiffIndexD];
-  if (targetElement) {
-    const parentPane = targetElement.parentNode;
-    const allPaneLines = Array.from(parentPane.querySelectorAll('.line'));
-    const lineIndex = allPaneLines.indexOf(targetElement);
-    
-    // スクロール位置の計算
-    const lineHeight = 20;
-    const targetScrollTop = (lineIndex * lineHeight) - (parentPane.clientHeight / 2) + 10;
-    const finalScrollTop = Math.max(0, targetScrollTop);
-    
-    const leftPane = document.getElementById('LD');
-    const rightPane = document.getElementById('RD');
-    
-    // 👇 変更：直接の代入ではなく、scrollTo を使ってスムーズにスクロールさせます
-    leftPane.scrollTo({ top: finalScrollTop, behavior: 'smooth' });
-    rightPane.scrollTo({ top: finalScrollTop, behavior: 'smooth' });
-    
-    // 塊全体をフワッと黄色ハイライト
-    const blockLength = parseInt(targetElement.dataset.blockLength) || 1;
-    const leftLines = leftPane.querySelectorAll('.line');
-    const rightLines = rightPane.querySelectorAll('.line');
-    
-    for (let k = 0; k < blockLength; k++) {
-      const targetIdx = lineIndex + k;
-      if (leftLines[targetIdx]) leftLines[targetIdx].classList.add('focused-diff-line');
-      if (rightLines[targetIdx]) rightLines[targetIdx].classList.add('focused-diff-line');
-    }
-    
-    document.getElementById('diffCountLabelD').innerText = (currentDiffIndexD + 1) + " / " + diffElementsD.length;
-  }
-}
-
-// ---【新設】コンフリクト表示（タブ2）用のジャンプ状態管理変数 ＆ 制御関数 ---
-let currentDiffIndexC = -1;
-let diffElementsC = [];
-
-// ---【スムーズスクロール版】コンフリクト表示（タブ2）用のジャンプ制御関数 ---
-function jumpConflictBlock(direction) {
-  if (diffElementsC.length === 0) return;
-
-  // 以前ハイライトしていた古い表示をクリア
-  document.querySelectorAll('.focused-diff-line').forEach(el => {
-    el.classList.remove('focused-diff-line');
-  });
-
-  currentDiffIndexC += direction;
-  if (currentDiffIndexC < 0) currentDiffIndexC = diffElementsC.length - 1;
-  else if (currentDiffIndexC >= diffElementsC.length) currentDiffIndexC = 0;
-
-  const targetElement = diffElementsC[currentDiffIndexC];
-  if (targetElement) {
-    const parentPane = targetElement.parentNode;
-    const allPaneLines = Array.from(parentPane.querySelectorAll('.line'));
-    const lineIndex = allPaneLines.indexOf(targetElement);
-    
-    // スクロール位置の計算
-    const lineHeight = 20;
-    const targetScrollTop = (lineIndex * lineHeight) - (parentPane.clientHeight / 2) + 10;
-    const finalScrollTop = Math.max(0, targetScrollTop);
-    
-    const leftPane = document.getElementById('LC');
-    const rightPane = document.getElementById('RC');
-    
-    // 👇 変更：直接の代入ではなく、scrollTo を使ってスムーズにスクロールさせます
-    leftPane.scrollTo({ top: finalScrollTop, behavior: 'smooth' });
-    rightPane.scrollTo({ top: finalScrollTop, behavior: 'smooth' });
-    
-    // 塊全体をフワッと黄色ハイライト
-    const blockLength = parseInt(targetElement.dataset.blockLength) || 1;
-    const leftLines = leftPane.querySelectorAll('.line');
-    const rightLines = rightPane.querySelectorAll('.line');
-    
-    for (let k = 0; k < blockLength; k++) {
-      const targetIdx = lineIndex + k;
-      if (leftLines[targetIdx]) leftLines[targetIdx].classList.add('focused-diff-line');
-      if (rightLines[targetIdx]) rightLines[targetIdx].classList.add('focused-diff-line');
-    }
-    
-    document.getElementById('diffCountLabelC').innerText = (currentDiffIndexC + 1) + " / " + diffElementsC.length;
-  }
 }
 </script>
 </body>

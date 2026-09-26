@@ -12,19 +12,26 @@ UNIX哲学に基づき、パイプライン（`|`）やリダイレクト（`>`�
 
 * **改行整形 (インデント付き展開):**
   ```bash
-  node qmk-json.js --pretty keymap.json > pretty.json
-  # 短縮形
-  node qmk-json.js -p keymap.json
+  node qmk-json.js -p keymap.json > pretty.json
   ```
 * **1行圧縮 (スペースなしミニファイ):**
-  ```bash
-  node qmk-json.js --minify pretty.json > minified.json
-  # 短縮形
-  node qmk-json.js -m pretty.json
-  ```
+
+  * A. QMK最優先：スペースを1文字も入れずに極限まで詰め切る
+    ```bash
+    node qmk-json.js -m pretty.json > minified.json
+    ```
+  * B. 可読性優先：コロン・カンマの後にだけ半角スペースを空ける (一般JSON向け)
+    ```bash
+    node qmk-json.js -m -s pretty.json > minified.json
+    ```
 * **パイプ連携:**
   ```bash
   cat keymap.json | node qmk-json.js -p
+  ```
+
+* **ファイル出力オプション指定**
+  ```bash
+  node qmk-json.js -p input.json output.json
   ```
 
 ---
@@ -94,3 +101,4 @@ JavaScriptコードの1行に埋め込まれた巨大な `JSON.parse('...')` を
 Keychron Launcherが更新されるとマージ・コンフリクト解消が必要になりますが、特にキーマップのJSONに差分が生じたときのコンフリクト解消や、キーマップ追加に手間がかかっていたため、
 このツールキットを開発しました。  
 本ツールのコアロジックおよびCLIインターフェースは、**Google Gemini** とのプロンプトによる試行錯誤とデバッグを経て共同開発されました。
+
