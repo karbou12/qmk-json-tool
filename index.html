@@ -354,19 +354,16 @@ function syncGutter() { document.getElementById('P-gutter').scrollTop = document
    ========================================================================== */
 function expandLineWithJSON_View(line) {
   const trimmed = line.trim(); if (!trimmed) return [line];
-  const hasJsonParse = line.includes("JSON.parse(");
+  const hasJsonParse = line.includes("JSON.parse") || trimmed.startsWith("JSON.parse");
 
   if (hasJsonParse) {
-    // 【ケースA】JavaScriptに埋め込まれたJSON
-    // 1. まずは正規表現でクォートのペアが正しく揃っているかチェック
-    let match = line.match(/JSON\.parse\((['"`])([\s\S]*?)\1\)/);
+    let match = line.match(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/);
     let quoteType = match ? match[1] : "'";
     let jsonStr = match ? match[2] : "";
     let fullMatch = match ? match[0] : "";
 
-    // 2. 【フォールバック】クォートが片方消失している場合の救済処理
     if (!match) {
-      const startIdx = line.indexOf("JSON.parse(");
+      const startIdx = line.indexOf("JSON.parse");
       const contentStart = startIdx + "JSON.parse(".length;
       let bracketContent = line.substring(contentStart);
 
@@ -376,12 +373,13 @@ function expandLineWithJSON_View(line) {
       const finalEndIdx = Math.max(jsonEndIdx, jsonEndIdx2);
 
       if (jsonStartIdx !== -1 && finalEndIdx !== -1 && finalEndIdx > jsonStartIdx) {
-        // 不正なコードの隙間から純粋なJSON部分だけを強制抽出
         jsonStr = bracketContent.substring(jsonStartIdx, finalEndIdx + 1);
-        fullMatch = line.substring(startIdx, line.lastIndexOf(")") + 1);
-        quoteType = "'"; // 消失した開始クォートをシングルクォートで自動補完
+        let closeParenIdx = bracketContent.indexOf(")", finalEndIdx);
+        if (closeParenIdx === -1) closeParenIdx = bracketContent.length;
+        fullMatch = line.substring(startIdx, contentStart + closeParenIdx + 1);
+        quoteType = "'";
       } else {
-        return [line]; // JSONの構造をしていない場合は諦めてそのまま返す
+        return [line];
       }
     }
 
@@ -394,11 +392,10 @@ function expandLineWithJSON_View(line) {
 
       let res = [prefix + "JSON.parse(" + quoteType + " /* --- 埋め込みJSONを展開表示 --- */"];
       prettyLines.forEach(l => res.push("      " + rest(l))); 
-      res.push("    " + quoteType + ")" + suffix); 
+      res.push(prefix + "    " + quoteType + ")" + suffix); 
       return res;
     } catch (e) { return [line]; }
   } else {
-    // 【ケースB】素のJSON
     if (!trimmed.startsWith('{') && !trimmed.startsWith('[') && !trimmed.endsWith('}') && !trimmed.endsWith(']')) return [line];
     let cleanTarget = trimmed; let hasTrailingComma = cleanTarget.endsWith(','); if (hasTrailingComma) cleanTarget = cleanTarget.slice(0, -1);
     const protectedJson = prot(cleanTarget);
@@ -453,13 +450,33 @@ function goDiff() {
     if (l.startsWith('-')) lRaw.push(l.slice(1)); else if (l.startsWith('+')) rRaw.push(l.slice(1));
     else { const c = l.startsWith(' ') ? l.slice(1) : l; lRaw.push(c); rRaw.push(c); }
   });
-  let lLines = [], rLines = [];
-  lRaw.forEach(line => lLines = lLines.concat(expandLineWithJSON_View(line)));
-  rRaw.forEach(line => rLines = rLines.concat(expandLineWithJSON_View(line)));
 
-  // もし不正な値が入っていた場合も、Math.max(1, ...) で確実に1以上の整数に強制修正
+  // 👈【Web版同期】複数行改行の結合処理を適用
+  function combineBrokenJsonParseLines(rawLines) {
+    let combined = []; let buffer = ""; let inParse = false;
+    for (let i = 0; i < rawLines.length; i++) {
+      let line = rawLines[i];
+      if (!inParse) {
+        if (line.includes("JSON.parse") && !line.match(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/)) { inParse = true; buffer = line; }
+        else { combined.push(line); }
+      } else {
+        buffer += "\n" + line;
+        if (line.includes(")")) { combined.push(buffer); buffer = ""; inParse = false; }
+      }
+    }
+    if (inParse && buffer) combined.push(buffer);
+    return combined;
+  }
+
+  let lProcessed = combineBrokenJsonParseLines(lRaw);
+  let rProcessed = combineBrokenJsonParseLines(rRaw);
+
+  let lLines = [], rLines = [];
+  lProcessed.forEach(line => lLines = lLines.concat(expandLineWithJSON_View(line)));
+  rProcessed.forEach(line => rLines = rLines.concat(expandLineWithJSON_View(line)));
+  
   let contextLinesD = Math.max(1, Math.floor(parseInt(document.getElementById('ctxD').value) || 3));
-  document.getElementById('ctxD').value = contextLinesD; // 画面の表示値も正しい整数に補正
+  document.getElementById('ctxD').value = contextLinesD;
   renderViewDiff(calcLCS(lLines, rLines), document.getElementById('useFilterD').checked, contextLinesD, L, R);
   document.getElementById('viewD').style.display = 'flex';
   initDiffJumpD(L, R);
@@ -473,12 +490,33 @@ function goConflict() {
     if (l.startsWith('<<<<<<<')) mode = 'left'; else if (l.startsWith('=======')) mode = 'right'; else if (l.startsWith('>>>>>>>')) mode = 'common';
     else { if (mode === 'common') { lRaw.push(l); rRaw.push(l); } else if (mode === 'left') lRaw.push(l); else if (mode === 'right') rRaw.push(l); }
   });
+
+  // 👈【Web版同期】複数行改行の結合処理を適用
+  function combineBrokenJsonParseLines(rawLines) {
+    let combined = []; let buffer = ""; let inParse = false;
+    for (let i = 0; i < rawLines.length; i++) {
+      let line = rawLines[i];
+      if (!inParse) {
+        if (line.includes("JSON.parse") && !line.match(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/)) { inParse = true; buffer = line; }
+        else { combined.push(line); }
+      } else {
+        buffer += "\n" + line;
+        if (line.includes(")")) { combined.push(buffer); buffer = ""; inParse = false; }
+      }
+    }
+    if (inParse && buffer) combined.push(buffer);
+    return combined;
+  }
+
+  let lProcessed = combineBrokenJsonParseLines(lRaw);
+  let rProcessed = combineBrokenJsonParseLines(rRaw);
+
   let lLines = [], rLines = [];
-  lRaw.forEach(line => lLines = lLines.concat(expandLineWithJSON_View(line)));
-  rRaw.forEach(line => rLines = rLines.concat(expandLineWithJSON_View(line)));
-  // もし不正な値が入っていた場合も、Math.max(1, ...) で確実に1以上の整数に強制修正
+  lProcessed.forEach(line => lLines = lLines.concat(expandLineWithJSON_View(line)));
+  rProcessed.forEach(line => rLines = rLines.concat(expandLineWithJSON_View(line)));
+  
   let contextLinesC = Math.max(1, Math.floor(parseInt(document.getElementById('ctxC').value) || 3));
-  document.getElementById('ctxC').value = contextLinesC; // 画面の表示値も正しい整数に補正
+  document.getElementById('ctxC').value = contextLinesC;
   renderViewDiff(calcLCS(lLines, rLines), document.getElementById('useFilterC').checked, contextLinesC, L, R);
   document.getElementById('viewC').style.display = 'flex';
   initDiffJumpC(L, R);
@@ -786,39 +824,41 @@ function mergeRest(s) { let out = s; for (let i = mergeProtectedMarkers.length -
 // --- クォートが千切れた不正なJS構文からでも、JSONを自動抽出して大展開する関数 ---
 function expandLineWithJSON(line) {
   const trimmed = line.trim(); if (!trimmed) return [line];
-  const hasJsonParse = line.includes("JSON.parse(");
+  const hasJsonParse = line.includes("JSON.parse") || trimmed.startsWith("JSON.parse");
 
   if (hasJsonParse) {
-    // 1. まずは正規表現で、クォートのペアが美しく揃っているかチェック
-    let match = line.match(/JSON\.parse\((['"`])([\s\S]*?)\1\)/);
+    // 1. 【超強力・複数行対応の正規表現】
+    // JSON.parse( の後に改行（\s\S）やスペース、クォートがどう入り組んでいても、
+    // 内部のエスケープを完全に考慮しながら、閉じカッコ「)」までの塊を1つのペアとして精密に抽出します。
+    let match = line.match(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/);
     let quoteType = match ? match[1] : "'";
     let jsonStr = match ? match[2] : "";
     let fullMatch = match ? match[0] : "";
 
-    // 2. 【フォールバック】クォートが片方消えている場合のレスキュー処理
+    // 2. 【フォールバック】クォートが片方消失、またはJS側で極端に改行されている場合の救済処理
     if (!match) {
-      const startIdx = line.indexOf("JSON.parse(");
+      const startIdx = line.indexOf("JSON.parse");
       const contentStart = startIdx + "JSON.parse(".length;
       let bracketContent = line.substring(contentStart);
 
-      // カッコの中にある最初と最後のブラケット（{ や [）の範囲を力技で特定
       const jsonStartIdx = bracketContent.search(/[\{\[]/);
       const jsonEndIdx = bracketContent.lastIndexOf("}");
       const jsonEndIdx2 = bracketContent.lastIndexOf("]");
       const finalEndIdx = Math.max(jsonEndIdx, jsonEndIdx2);
 
       if (jsonStartIdx !== -1 && finalEndIdx !== -1 && finalEndIdx > jsonStartIdx) {
-        // 壊れた構文の隙間から、純粋なJSONテキスト部分だけを強引に抽出！
         jsonStr = bracketContent.substring(jsonStartIdx, finalEndIdx + 1);
-        // 置換対象となる不完全な「JSON.parse(...)」全体の文字列を定義
-        fullMatch = line.substring(startIdx, line.lastIndexOf(")") + 1);
-        quoteType = "'"; // 消失したクォートをシングルクォートで自動補完
+        // カッコの閉じ位置を正確に特定
+        let closeParenIdx = bracketContent.indexOf(")", finalEndIdx);
+        if (closeParenIdx === -1) closeParenIdx = bracketContent.length;
+        fullMatch = line.substring(startIdx, contentStart + closeParenIdx + 1);
+        quoteType = "'"; 
       } else {
-        return [line]; // どうしてもJSONの形をしていなければ諦めてそのまま返す
+        return [line]; // JSONの構造を満たしていなければそのまま返す
       }
     }
 
-    // 3. 抽出したJSONをQMK文字保護ロジックを通して縦に大展開（以降は共通の最強処理）
+    // 3. 抽出したJSON文字列をQMK文字保護ロジックに通して縦に美しく大展開
     const protectedJson = mergeProt(jsonStr);
     try {
       let parsedObj;
@@ -826,18 +866,19 @@ function expandLineWithJSON(line) {
       catch(e) { parsedObj = JSON.parse("[" + (protectedJson.endsWith(',') ? protectedJson.slice(0, -1) : protectedJson) + "]"); }
 
       const prettyJSONLines = JSON.stringify(parsedObj, null, 2).split('\n');
+
       const prefix = line.substring(0, line.indexOf(fullMatch));
       const suffix = line.substring(line.indexOf(fullMatch) + fullMatch.length);
 
       let result = [];
-      // 壊れていた開始クォートもここで美しい「'」の形に完全補完されて生成されます
+      // JavaScript側での不揃いな改行指定を、ツールキット基準の美しい1行構造に再定義して展開を開始します
       result.push(prefix + "JSON.parse(" + quoteType + " /* --- 埋め込みJSONを展開表示 --- */");
       prettyJSONLines.forEach(jLine => result.push("  " + mergeRest(jLine)));
-      result.push(quoteType + ")" + suffix); 
+      result.push(prefix + "  " + quoteType + ")" + suffix); 
       return result;
     } catch (e) { return [line]; }
   } else {
-    // 【ケースB】素のJSON（変更なし）
+    // 素のJSON（変更なし）
     if (!trimmed.startsWith('{') && !trimmed.startsWith('[') && !trimmed.endsWith('}') && !trimmed.endsWith(']')) return [line];
     let cleanTarget = trimmed; let hasTrailingComma = cleanTarget.endsWith(','); if (hasTrailingComma) cleanTarget = cleanTarget.slice(0, -1);
     const protectedJson = mergeProt(cleanTarget);
@@ -942,13 +983,31 @@ function createGutterLineElement(parent, lineNum, colorClass) {
 function parseExpandAndBuild() {
   const src = document.getElementById('conflictMergeInput').value, L = document.getElementById('LM'), R = document.getElementById('RM');
   L.innerHTML = R.innerHTML = ''; mergedBlocks = []; if (!src.trim()) return;
+
+  // 1. 改行コードを統一
   let cleanSrc = src.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+  // 2. 文字列内のQMKスペースデータを絶対に壊さないよう、「\s+/g」による一括置換を完全に撤廃！！
+  // 純粋にJavaScript側で改行されてしまった改行記号（\n）だけをピンポイントで消去し、元のコードサイズを1ミリも狂わせずに合流させます。
+  cleanSrc = cleanSrc.replace(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/g, function(match) {
+    // 内部の改行コード（\n）だけを安全に消去して1行に繋ぎます（中の空白の数は100%無傷で残ります）
+    return match.replace(/\n/g, '');
+  });
+
+  // 3. 完璧にデータサイズが維持されたまま、コンフリクトマーカーの左右分離をスタート
   let lRawLines = [], rRawLines = [], mode = 'common';
   cleanSrc.split('\n').forEach(l => {
-    if (l.startsWith('<<<<<<<')) mode = 'left'; else if (l.startsWith('=======')) mode = 'right'; else if (l.startsWith('>>>>>>>')) mode = 'common';
-    else { if (mode === 'common') { lRawLines.push(l); rRawLines.push(l); } else if (mode === 'left') lRawLines.push(l); else if (mode === 'right') rRawLines.push(l); }
+    if (l.startsWith('<<<<<<<')) mode = 'left'; 
+    else if (l.startsWith('=======')) mode = 'right'; 
+    else if (l.startsWith('>>>>>>>')) mode = 'common';
+    else { 
+      if (mode === 'common') { lRawLines.push(l); rRawLines.push(l); } 
+      else if (mode === 'left') lRawLines.push(l); 
+      else if (mode === 'right') rRawLines.push(l); 
+    }
   });
   if (mode !== 'common' || lRawLines.length === 0) { alert('⚠️ 正しいコンフリクトマーカーが見つかりません。'); return; }
+
   let lLines = [], rLines = [];
   lRawLines.forEach(line => { expandLineWithJSON(line).forEach(el => { if (el.trim() || el === "") lLines.push(el); }); });
   rRawLines.forEach(line => { expandLineWithJSON(line).forEach(el => { if (el.trim() || el === "") rLines.push(el); }); });
@@ -979,11 +1038,9 @@ function parseExpandAndBuild() {
   });
   rebuildResultText(); document.getElementById('workspace').style.display = 'flex'; currentConflictIndex = -1;
   conflictHeaderElements = Array.from(L.querySelectorAll('.conflict-block-head'));
-  const navEl = document.getElementById('conflictNav'), labelEl = document.getElementById('conflictCountLabel');
-  if (conflictHeaderElements.length > 0) { navEl.style.display = 'inline-flex'; labelEl.innerText = "0 / " + conflictHeaderElements.length; } else { navEl.style.display = 'none'; }
-
   initMergeJumpUI();
 
+  // 4. 操作ボタンとジャンプ入力欄（controls）を画面最上端にぴったり合わせて固定表示
   const controlsEl = document.getElementById('conflictMergeInput').nextElementSibling;
   if (controlsEl && controlsEl.classList.contains('controls')) {
     controlsEl.scrollIntoView({ 

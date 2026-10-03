@@ -24,14 +24,10 @@ UNIX哲学に基づき、パイプライン（`|`）やリダイレクト（`>`�
     ```bash
     node qmk-json.js -m -s pretty.json > minified.json
     ```
-* **パイプ連携:**
+* **入力方法:** 入力ファイルは省略できます。省略時は標準入力から読み込みます。出力は常に標準出力です。
   ```bash
+  node qmk-json.js -p keymap.json > pretty.json
   cat keymap.json | node qmk-json.js -p
-  ```
-
-* **ファイル出力オプション指定**
-  ```bash
-  node qmk-json.js -p input.json output.json
   ```
 
 ---

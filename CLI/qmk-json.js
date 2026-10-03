@@ -17,10 +17,11 @@ const fs = require('fs');
 
 // コマンドライン引数の解析
 const args = process.argv.slice(2);
-if (args.length < 2 || (!args.includes('-p') && !args.includes('-m') && !args.includes('-s')  )) {
+if (!args.includes('-p') && !args.includes('-m')) {
   console.log(`
 Usage:
   node qmk-json.js <mode> [option] [file]
+  cat input.json | node qmk-json.js <mode> [option]
 
 Modes:
   -p   : 1行JSONを綺麗なインデント付きの改行整形JSONに変換
@@ -39,17 +40,21 @@ Examples:
 const mode = args.includes('-p') ? '-p' : '-m';
 const addSpaceOption = args.includes('-s');
 
-// オプションフラグを除去して純粋なファイルパスを抽出
+// モード・スペースオプション以外の引数は入力ファイルとして扱う
 const fileArgs = args.filter(a => a !== '-p' && a !== '-m' && a !== '-s');
 const inputFile = fileArgs[0];
-const outputFile = fileArgs[1]; // 省略された場合はコンソールに出力
-
-if (!fs.existsSync(inputFile)) {
-  console.error(`❌ エラー: 入力ファイル '${inputFile}' が見つかりません。`);
+if (fileArgs.length > 1) {
+  console.error('❌ エラー: 出力ファイルは指定できません。変換結果は標準出力へ出力されます。');
   process.exit(1);
 }
 
-const rawInput = fs.readFileSync(inputFile, 'utf-8').trim();
+let rawInput;
+try {
+  rawInput = (inputFile ? fs.readFileSync(inputFile, 'utf-8') : fs.readFileSync(0, 'utf-8')).trim();
+} catch (err) {
+  console.error(`❌ エラー: 入力の読み込みに失敗しました: ${err.message}`);
+  process.exit(1);
+}
 
 // ==========================================================================
 // Web版から完全同期：QMK文字保護 ＆ 動的インデックス型スペース注入コアエンジン
@@ -171,11 +176,5 @@ if (mode === '-p') {
   }
 }
 
-// 結果の出力（ファイル指定があれば書き込み、なければ標準出力）
-if (outputFile) {
-  fs.writeFileSync(outputFile, finalResult, 'utf-8');
-  console.log(`\n🎉 変換が正常に完了し、'${outputFile}' へ保存されました！`);
-} else {
-  process.stdout.write(finalResult + "\n");
-}
-
+// 変換結果は常に標準出力へ出力
+process.stdout.write(finalResult + "\n");

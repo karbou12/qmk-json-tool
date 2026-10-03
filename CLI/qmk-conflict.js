@@ -83,7 +83,7 @@ if (filePath) {
 
 // 1行のJSコードからJSON.parse('...')を抽出し、インデント付き複数行に展開する
 function expandLineWithJSON(line) {
-  const match = line.match(/JSON\.parse\((['"`])([\s\S]*?)\1\)/);
+  const match = line.match(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/);
   if (!match) return [line];
   const fullMatch = match[0], quoteType = match[1]; let jsonStr = match[2];
   try { jsonStr = new Function(`return ${quoteType}${jsonStr}${quoteType}`)(); } catch(e) {}
@@ -97,6 +97,33 @@ function expandLineWithJSON(line) {
     result.push("    " + quoteType + ")" + suffix);
     return result;
   } catch (e) { return [line]; }
+}
+
+function combineBrokenJsonParseLines(lines) {
+  const combined = [];
+  let buffer = '';
+  let inParse = false;
+
+  for (const line of lines) {
+    if (!inParse) {
+      if (line.includes('JSON.parse') && !line.match(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/)) {
+        inParse = true;
+        buffer = line;
+      } else {
+        combined.push(line);
+      }
+    } else {
+      buffer += '\n' + line;
+      if (buffer.match(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/)) {
+        combined.push(buffer);
+        buffer = '';
+        inParse = false;
+      }
+    }
+  }
+
+  if (inParse) combined.push(buffer);
+  return combined;
 }
 
 // LCS（最長共通部分系列）アルゴリズム
@@ -132,7 +159,10 @@ function execute(src) {
     }
   });
 
-  // 2. 埋め込みJSONの展開
+  // 2. 改行されたJSON.parse呼び出しを結合してから埋め込みJSONを展開
+  lRawLines = combineBrokenJsonParseLines(lRawLines);
+  rRawLines = combineBrokenJsonParseLines(rRawLines);
+
   let lLines = [], rLines = [];
   lRawLines.forEach(line => lLines = lLines.concat(expandLineWithJSON(line)));
   rRawLines.forEach(line => rLines = rLines.concat(expandLineWithJSON(line)));
