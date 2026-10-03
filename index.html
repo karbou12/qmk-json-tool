@@ -984,10 +984,17 @@ function parseExpandAndBuild() {
   const src = document.getElementById('conflictMergeInput').value, L = document.getElementById('LM'), R = document.getElementById('RM');
   L.innerHTML = R.innerHTML = ''; mergedBlocks = []; if (!src.trim()) return;
 
+  // 1. 改行コードを統一
   let cleanSrc = src.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
-  // 👈 修正：不完全だった分断前の replace ロジックを完全に撤廃！！
-  // まずはプレーンに行分割して、Gitのマーカー通りに安全に左右へ振り分けます。
+  // 2. 文字列内のQMKスペースデータを絶対に壊さないよう、「\s+/g」による一括置換を完全に撤廃！！
+  // 純粋にJavaScript側で改行されてしまった改行記号（\n）だけをピンポイントで消去し、元のコードサイズを1ミリも狂わせずに合流させます。
+  cleanSrc = cleanSrc.replace(/JSON\.parse\s*\(\s*(['"`])([\s\S]*?)\1\s*\)/g, function(match) {
+    // 内部の改行コード（\n）だけを安全に消去して1行に繋ぎます（中の空白の数は100%無傷で残ります）
+    return match.replace(/\n/g, '');
+  });
+
+  // 3. 完璧にデータサイズが維持されたまま、コンフリクトマーカーの左右分離をスタート
   let lRawLines = [], rRawLines = [], mode = 'common';
   cleanSrc.split('\n').forEach(l => {
     if (l.startsWith('<<<<<<<')) mode = 'left'; 
@@ -1001,86 +1008,9 @@ function parseExpandAndBuild() {
   });
   if (mode !== 'common' || lRawLines.length === 0) { alert('⚠️ 正しいコンフリクトマーカーが見つかりません。'); return; }
 
-  // 👈【大改良：完全エスケープ考慮型・行結合ステートマシーン】
-  // 分断された配列それぞれの中で、バックスラッシュの連続（\\\\等）を1文字ずつ厳密に追跡し、
-  // クォートの終わりと、本当の「)」の位置を1ピクセルの狂いもなく見切って1行にドッキングします。
-  function combineBrokenJsonParseLines(rawLines) {
-    let combined = [];
-    let buffer = "";
-    let inParse = false;
-    let inStr = false;
-    let quoteChar = "";
-    let escaped = false;
-
-    for (let i = 0; i < rawLines.length; i++) {
-      let line = rawLines[i];
-
-      if (!inParse) {
-        // 行の中に "JSON.parse" というキーワードが含まれているかチェック
-        if (line.includes("JSON.parse")) {
-          // その行だけで完結しているか（簡易判定）、閉じていなければバッファリング開始
-          let openCount = (line.match(/\(/g) || []).length;
-          let closeCount = (line.match(/\)/g) || []).length;
-          if (openCount !== closeCount || !line.includes(")")) {
-            inParse = true;
-            inStr = false;
-            escaped = false;
-            buffer = line;
-          } else {
-            combined.push(line);
-          }
-        } else {
-          combined.push(line);
-        }
-      } else {
-        // 改行を跨いでバッファへ結合
-        buffer += "\n" + line;
-
-        // 👈 この行の文字を一文字ずつ走査し、エスケープを完璧に計算して「本当の閉じカッコ」を探す
-        let idx = 0;
-        while (idx < line.length) {
-          let c = line[idx];
-          if (inStr) {
-            if (escaped) {
-              escaped = false;
-            } else if (c === '\\') {
-              escaped = true;
-            } else if (c === quoteChar) {
-              inStr = false; // エスケープされていない正しいクォートで文字列終了
-            }
-          } else {
-            if (c === '"' || c === "'") {
-              inStr = true;
-              quoteChar = c;
-              escaped = false;
-            } else if (c === ')') {
-              // 👈 文字列の外側で、かつ閉じカッコ「)」を見つけた瞬間、100%確実にJSON.parseの終了と判定！
-              inParse = false;
-            }
-          }
-          idx++;
-        }
-
-        // JSON.parse が正常に閉じられたら、結合したバッファを確定
-        if (!inParse) {
-          combined.push(buffer);
-          buffer = "";
-        }
-      }
-    }
-    if (buffer) {
-      combined.push(buffer); // セーフティガード
-    }
-    return combined;
-  }
-
-  // 左右それぞれのペインで、難解なエスケープ行を安全に結合
-  let lProcessedRaw = combineBrokenJsonParseLines(lRawLines);
-  let rProcessedRaw = combineBrokenJsonParseLines(rRawLines);
-
   let lLines = [], rLines = [];
-  lProcessedRaw.forEach(line => { expandLineWithJSON(line).forEach(el => { if (el.trim() || el === "") lLines.push(el); }); });
-  rProcessedRaw.forEach(line => { expandLineWithJSON(line).forEach(el => { if (el.trim() || el === "") rLines.push(el); }); });
+  lRawLines.forEach(line => { expandLineWithJSON(line).forEach(el => { if (el.trim() || el === "") lLines.push(el); }); });
+  rRawLines.forEach(line => { expandLineWithJSON(line).forEach(el => { if (el.trim() || el === "") rLines.push(el); }); });
 
   const lcsResult = calcLCS(lLines, rLines);
   let currentBlock = null, conflictIdCounter = 0;
@@ -1110,8 +1040,14 @@ function parseExpandAndBuild() {
   conflictHeaderElements = Array.from(L.querySelectorAll('.conflict-block-head'));
   initMergeJumpUI();
 
-  const workspaceEl = document.getElementById('workspace');
-  if (workspaceEl) { workspaceEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  // 4. 操作ボタンとジャンプ入力欄（controls）を画面最上端にぴったり合わせて固定表示
+  const controlsEl = document.getElementById('conflictMergeInput').nextElementSibling;
+  if (controlsEl && controlsEl.classList.contains('controls')) {
+    controlsEl.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start'
+    });
+  }
 }
 
 function addOutputLine(parent, num, text, className) {
