@@ -1292,6 +1292,7 @@ function minifyResult() {
   text = text.replace(/\/\* --- ここから Incoming のコード --- \*\//g, '');
 
   const isJavaScriptFormat = text.includes("JSON.parse(");
+  const addSpacesAfterSeparator = document.getElementById('addSpaceAfterSeparator').checked;
   let finalOutputText = "";
 
   if (isJavaScriptFormat) {
@@ -1321,7 +1322,9 @@ function minifyResult() {
           let lastChunk = line.substring(0, endIdx).trim();
           if (lastChunk && !lastChunk.includes("/* --- 埋め込みJSONを展開表示 --- */")) jsonBuffer += lastChunk;
           const currentSuffix = line.substring(endIdx);
-          processedLines.push(currentPrefix + compressPureJSON(jsonBuffer) + currentSuffix);
+          let minifiedJSON = compressPureJSON(jsonBuffer);
+          if (addSpacesAfterSeparator) minifiedJSON = injectSpacesToJSON(minifiedJSON);
+          processedLines.push(currentPrefix + minifiedJSON + currentSuffix);
           inJSON = false;
           jsonBuffer = "";
         } else {
@@ -1331,13 +1334,17 @@ function minifyResult() {
         }
       }
     }
-    if (inJSON && jsonBuffer) { processedLines.push(currentPrefix + compressPureJSON(jsonBuffer) + currentQuote + ")"); }
+    if (inJSON && jsonBuffer) {
+      let minifiedJSON = compressPureJSON(jsonBuffer);
+      if (addSpacesAfterSeparator) minifiedJSON = injectSpacesToJSON(minifiedJSON);
+      processedLines.push(currentPrefix + minifiedJSON + currentQuote + ")");
+    }
     finalOutputText = processedLines.join('\n');
   } else {
     finalOutputText = compressPureJSON(text);
   }
 
-  if (document.getElementById('addSpaceAfterSeparator').checked) {
+  if (addSpacesAfterSeparator && !isJavaScriptFormat) {
     finalOutputText = injectSpacesToJSON(finalOutputText);
   }
 
