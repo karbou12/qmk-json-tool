@@ -392,7 +392,7 @@ function expandLineWithJSON_View(line) {
 
       let res = [prefix + "JSON.parse(" + quoteType + " /* --- 埋め込みJSONを展開表示 --- */"];
       prettyLines.forEach(l => res.push("      " + rest(l))); 
-      res.push(prefix + "    " + quoteType + ")" + suffix); 
+      res.push("    " + quoteType + ")" + suffix); 
       return res;
     } catch (e) { return [line]; }
   } else {
@@ -874,7 +874,7 @@ function expandLineWithJSON(line) {
       // JavaScript側での不揃いな改行指定を、ツールキット基準の美しい1行構造に再定義して展開を開始します
       result.push(prefix + "JSON.parse(" + quoteType + " /* --- 埋め込みJSONを展開表示 --- */");
       prettyJSONLines.forEach(jLine => result.push("  " + mergeRest(jLine)));
-      result.push(prefix + "  " + quoteType + ")" + suffix); 
+      result.push("  " + quoteType + ")" + suffix); 
       return result;
     } catch (e) { return [line]; }
   } else {
