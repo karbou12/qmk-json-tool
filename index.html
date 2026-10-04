@@ -579,14 +579,25 @@ function jumpToSpecificBlockD() {
   executeDiffScrollAndHighlightD();
 }
 
+function getCenteredPaneScrollTop(pane, line) {
+  const paneRect = pane.getBoundingClientRect();
+  const lineRect = line.getBoundingClientRect();
+  const lineTop = pane.scrollTop + lineRect.top - paneRect.top;
+  return Math.max(0, lineTop - (pane.clientHeight - lineRect.height) / 2);
+}
+
 function executeDiffScrollAndHighlightD() {
   document.querySelectorAll('.focused-diff-line').forEach(el => el.classList.remove('focused-diff-line'));
   const target = diffElementsD[currentDiffIndexD];
   if (target) {
-    const parent = target.parentNode, idx = Array.from(parent.querySelectorAll('.line')).indexOf(target), finalY = Math.max(0, (idx * 20) - (parent.clientHeight / 2) + 10);
-    document.getElementById('LD').scrollTo({ top: finalY, behavior: 'smooth' }); document.getElementById('RD').scrollTo({ top: finalY, behavior: 'smooth' });
-    const len = parseInt(target.dataset.blockLength) || 1, lL = document.getElementById('LD').querySelectorAll('.line'), rL = document.getElementById('RD').querySelectorAll('.line');
-    for (let k = 0; k < len; k++) { if (lL[idx+k]) lL[idx+k].classList.add('focused-diff-line'); if (rL[idx+k]) rL[idx+k].classList.add('focused-diff-line'); }
+    const parent = target.parentNode, idx = Array.from(parent.querySelectorAll('.line')).indexOf(target);
+    const leftPane = document.getElementById('LD'), rightPane = document.getElementById('RD');
+    const leftLines = leftPane.querySelectorAll('.line'), rightLines = rightPane.querySelectorAll('.line');
+    const targetScrollTop = getCenteredPaneScrollTop(parent, target);
+    leftPane.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+    rightPane.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+    const len = parseInt(target.dataset.blockLength) || 1;
+    for (let k = 0; k < len; k++) { if (leftLines[idx+k]) leftLines[idx+k].classList.add('focused-diff-line'); if (rightLines[idx+k]) rightLines[idx+k].classList.add('focused-diff-line'); }
     document.getElementById('diffIdxInputD').value = currentDiffIndexD + 1;
   }
 }
@@ -643,10 +654,14 @@ function executeDiffScrollAndHighlightC() {
   document.querySelectorAll('.focused-diff-line').forEach(el => el.classList.remove('focused-diff-line'));
   const target = diffElementsC[currentDiffIndexC];
   if (target) {
-    const parent = target.parentNode, idx = Array.from(parent.querySelectorAll('.line')).indexOf(target), finalY = Math.max(0, (idx * 20) - (parent.clientHeight / 2) + 10);
-    document.getElementById('LC').scrollTo({ top: finalY, behavior: 'smooth' }); document.getElementById('RC').scrollTo({ top: finalY, behavior: 'smooth' });
-    const len = parseInt(target.dataset.blockLength) || 1, lL = document.getElementById('LC').querySelectorAll('.line'), rL = document.getElementById('RC').querySelectorAll('.line');
-    for (let k = 0; k < len; k++) { if (lL[idx+k]) lL[idx+k].classList.add('focused-diff-line'); if (rL[idx+k]) rL[idx+k].classList.add('focused-diff-line'); }
+    const parent = target.parentNode, idx = Array.from(parent.querySelectorAll('.line')).indexOf(target);
+    const leftPane = document.getElementById('LC'), rightPane = document.getElementById('RC');
+    const leftLines = leftPane.querySelectorAll('.line'), rightLines = rightPane.querySelectorAll('.line');
+    const targetScrollTop = getCenteredPaneScrollTop(parent, target);
+    leftPane.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+    rightPane.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+    const len = parseInt(target.dataset.blockLength) || 1;
+    for (let k = 0; k < len; k++) { if (leftLines[idx+k]) leftLines[idx+k].classList.add('focused-diff-line'); if (rightLines[idx+k]) rightLines[idx+k].classList.add('focused-diff-line'); }
     document.getElementById('diffIdxInputC').value = currentDiffIndexC + 1;
   }
 }
